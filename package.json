@@ -18,7 +18,7 @@
     "test": "nyc --reporter=lcov mocha --timeout=30000",
     "test:unit": "mocha --exclude test/git.spec.js",
     "coverage": "nyc report --reporter=lcov",
-    "release": "node ./bin/cli.js",
+    "release": "npm run lint && npm run test && npm run build && node ./bin/cli.js",
     "prepare": "husky install"
   },
   "nyc": {
