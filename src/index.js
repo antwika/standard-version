@@ -7,9 +7,9 @@ const latestSemverTag = require('./latest-semver-tag');
 const printError = require('./print-error');
 const tag = require('./lifecycles/tag');
 const { resolveUpdaterObjectFromArgument } = require('./updaters');
+const defaults = require('./defaults');
 
 module.exports = async function standardVersion(argv) {
-  const defaults = require('./defaults');
   /**
    * `--message` (`-m`) support will be removed in the next major version.
    */
@@ -63,6 +63,7 @@ module.exports = async function standardVersion(argv) {
       console.warn(`Error thrown while trying to read package path ${pkgPath} ... Is this expected?`);
     }
   }
+
   try {
     let version;
     if (pkg) {
