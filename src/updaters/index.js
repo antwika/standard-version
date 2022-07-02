@@ -1,5 +1,5 @@
 const path = require('path')
-const JSON_BUMP_FILES = require('../../defaults').bumpFiles
+const JSON_BUMP_FILES = require('../defaults').bumpFiles
 const updatersByType = {
   json: require('./types/json'),
   'plain-text': require('./types/plain-text')

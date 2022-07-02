@@ -6,10 +6,10 @@ const fs = require('fs')
 require('chai').should()
 
 function exec (opt) {
-  const cli = require('../command')
+  const cli = require('../src/command')
   opt = cli.parse(`standard-version ${opt} --silent`)
   opt.skip = { commit: true, tag: true }
-  return require('../index')(opt)
+  return require('../src/index')(opt)
 }
 
 describe('presets', () => {

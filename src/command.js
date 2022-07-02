@@ -1,5 +1,5 @@
 const spec = require('conventional-changelog-config-spec')
-const { getConfiguration } = require('./lib/configuration')
+const { getConfiguration } = require('./configuration')
 const defaults = require('./defaults')
 
 const yargs = require('yargs')

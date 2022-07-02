@@ -10,8 +10,8 @@ const mockFS = require('mock-fs')
 const mockery = require('mockery')
 const stdMocks = require('std-mocks')
 
-const cli = require('../command')
-const formatCommitMessage = require('../lib/format-commit-message')
+const cli = require('../src/command')
+const formatCommitMessage = require('../src/format-commit-message')
 
 require('chai').should()
 
@@ -80,7 +80,7 @@ function mock ({ bump, changelog, execFile, fs, pkg, tags } = {}) {
   }
 
   // needs to be set after mockery, but before mock-fs
-  standardVersion = require('../index')
+  standardVersion = require('../src/index')
 
   fs = Object.assign({}, fs)
   if (pkg) {
@@ -180,7 +180,7 @@ describe('cli', function () {
     })
 
     it('appends the new release above the last release, removing the old header (new format)', async function () {
-      const { header } = require('../defaults')
+      const { header } = require('../src/defaults')
       const changelog1 =
         '### [1.0.1](/compare/v1.0.0...v1.0.1) (YYYY-MM-DD)\n\n\n### Bug Fixes\n\n* patch release ABCDEFXY\n'
       mock({ bump: 'patch', changelog: changelog1, tags: ['v1.0.0'] })
