@@ -48,7 +48,10 @@ function outputChangelog(args, newVersion) {
     changelogStream.on('end', () => {
       checkpoint(args, 'outputting changes to %s', [args.infile]);
       if (args.dryRun) console.info(`\n---\n${chalk.gray(content.trim())}\n---\n`);
-      else writeFile(args, args.infile, `${header}\n${(content + oldContent).replace(/\n+$/, '\n')}`);
+      else {
+        const trimmed = `${header}\n${(content + oldContent)}`.trimEnd();
+        writeFile(args, args.infile, `${trimmed}\n`);
+      }
       return resolve();
     });
   });
