@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "license": "MIT",
   "name": "@antwika/standard-version",
   "version": "0.1.1",

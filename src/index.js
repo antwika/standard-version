@@ -8,6 +8,9 @@ const printError = require('./print-error');
 const tag = require('./lifecycles/tag');
 const { resolveUpdaterObjectFromArgument } = require('./updaters');
 const defaults = require('./defaults');
+const test = require('./test').default;
+
+test();
 
 module.exports = async function standardVersion(argv) {
   /**

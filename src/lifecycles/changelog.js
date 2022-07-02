@@ -4,7 +4,7 @@ const fs = require('fs');
 const checkpoint = require('../checkpoint');
 const presetLoader = require('../preset-loader');
 const runLifecycleScript = require('../run-lifecycle-script');
-const writeFile = require('../write-file');
+const writeFile = require('../write-file').default;
 
 const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;
 
