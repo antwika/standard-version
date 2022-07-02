@@ -6,7 +6,7 @@ const presetLoader = require('../preset-loader');
 const runLifecycleScript = require('../run-lifecycle-script');
 const writeFile = require('../write-file');
 
-const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?[0-9]+\.[0-9]+\.[0-9]+|<a name=)/m;
+const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;
 
 function createIfMissing(args) {
   try {
