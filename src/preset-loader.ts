@@ -1,8 +1,8 @@
 // TODO: this should be replaced with an object we maintain and
 // describe in: https://github.com/conventional-changelog/conventional-changelog-config-spec
-const spec = require('conventional-changelog-config-spec');
+import spec from 'conventional-changelog-config-spec';
 
-module.exports = (args) => {
+const presetLoader = (args: any) => {
   const defaultPreset = require.resolve('conventional-changelog-conventionalcommits');
   let preset = args.preset || defaultPreset;
   if (preset === defaultPreset) {
@@ -15,3 +15,5 @@ module.exports = (args) => {
   }
   return preset;
 };
+
+export default presetLoader;

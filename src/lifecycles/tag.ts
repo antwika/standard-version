@@ -1,12 +1,12 @@
-const chalk = require('chalk');
-const figures = require('figures');
-const bump = require('./bump');
-const checkpoint = require('../checkpoint');
-const formatCommitMessage = require('../format-commit-message');
-const runExecFile = require('../run-execFile');
-const runLifecycleScript = require('../run-lifecycle-script');
+import chalk from 'chalk';
+import figures from 'figures';
+import bump from './bump';
+import checkpoint from '../checkpoint';
+import formatCommitMessage from '../format-commit-message';
+import runExecFile from '../run-execFile';
+import runLifecycleScript from '../run-lifecycle-script';
 
-async function execTag(newVersion, pkgPrivate, args) {
+async function execTag(newVersion: any, pkgPrivate: any, args: any) {
   let tagOption;
   if (args.sign) {
     tagOption = '-s';
@@ -31,9 +31,11 @@ async function execTag(newVersion, pkgPrivate, args) {
   checkpoint(args, 'Run `%s` to publish', [message], chalk.blue(figures.info));
 }
 
-module.exports = async (newVersion, pkgPrivate, args) => {
+const Tag = async (newVersion: any, pkgPrivate: any, args: any) => {
   if (args.skip.tag) return;
   await runLifecycleScript(args, 'pretag');
   await execTag(newVersion, pkgPrivate, args);
   await runLifecycleScript(args, 'posttag');
 };
+
+export default Tag;

@@ -1,13 +1,13 @@
-const path = require('path');
-const bump = require('./bump');
-const checkpoint = require('../checkpoint');
-const formatCommitMessage = require('../format-commit-message');
-const runExecFile = require('../run-execFile');
-const runLifecycleScript = require('../run-lifecycle-script');
+import path from 'path';
+import bump from './bump';
+import checkpoint from '../checkpoint';
+import formatCommitMessage from '../format-commit-message';
+import runExecFile from '../run-execFile';
+import runLifecycleScript from '../run-lifecycle-script';
 
-async function execCommit(args, newVersion) {
+async function execCommit(args: any, newVersion: any) {
   let msg = 'committing %s';
-  let paths = [];
+  let paths: any = [];
   const verify = args.verify === false || args.n ? ['--no-verify'] : [];
   const sign = args.sign ? ['-S'] : [];
   const toAdd = [];
@@ -60,7 +60,7 @@ async function execCommit(args, newVersion) {
   );
 }
 
-module.exports = async (args, newVersion) => {
+const Commit = async (args: any, newVersion: any) => {
   if (args.skip.commit) return;
   const message = await runLifecycleScript(args, 'precommit');
   // eslint-disable-next-line no-param-reassign
@@ -68,3 +68,5 @@ module.exports = async (args, newVersion) => {
   await execCommit(args, newVersion);
   await runLifecycleScript(args, 'postcommit');
 };
+
+export default Commit;

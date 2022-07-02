@@ -1,7 +1,7 @@
-const spec = require('conventional-changelog-config-spec');
-const y = require('yargs');
-const { getConfiguration } = require('./configuration');
-const defaults = require('./defaults');
+import spec from 'conventional-changelog-config-spec';
+import y from 'yargs';
+import { getConfiguration } from './configuration';
+import defaults from './defaults';
 
 const yargs = y
   .usage('Usage: $0 [options]')
@@ -131,4 +131,4 @@ Object.keys(spec.properties).forEach((propertyKey) => {
   });
 });
 
-module.exports = yargs;
+export default yargs;

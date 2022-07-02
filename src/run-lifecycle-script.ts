@@ -1,9 +1,9 @@
-const chalk = require('chalk');
-const figures = require('figures');
-const checkpoint = require('./checkpoint');
-const runExec = require('./run-exec');
+import chalk from 'chalk';
+import figures from 'figures';
+import checkpoint from './checkpoint';
+import runExec from './run-exec';
 
-module.exports = async (args, hookName) => {
+const runLifecycleScript = async (args: any, hookName: any) => {
   const { scripts } = args;
   if (!scripts || !scripts[hookName]) return undefined;
   const command = scripts[hookName];
@@ -11,3 +11,5 @@ module.exports = async (args, hookName) => {
   checkpoint(args, '- execute command: "%s"', [command], chalk.blue(figures.info));
   return runExec(args, command);
 };
+
+export default runLifecycleScript;

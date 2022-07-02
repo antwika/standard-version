@@ -1,15 +1,18 @@
-const shell = require('shelljs');
-const fs = require('fs');
+import shell from 'shelljs';
+import fs from 'fs';
+import chai from 'chai';
+import cli from '../src/command';
+import index from '../src/index';
 
-require('chai').should();
+chai.should();
 
 function exec(opt) {
-  const cli = require('../src/command');
+  // const cli = require('../src/command');
   // eslint-disable-next-line no-param-reassign
   opt = cli.parse(`standard-version ${opt} --silent`);
   // eslint-disable-next-line no-param-reassign
   opt.skip = { commit: true, tag: true };
-  return require('../src/index')(opt);
+  return index(opt);
 }
 
 describe('presets', () => {

@@ -1,6 +1,6 @@
-const path = require('path');
-const findUp = require('find-up');
-const { readFileSync } = require('fs');
+import path from 'path';
+import findUp from 'find-up';
+import { readFileSync } from 'fs';
 
 const CONFIGURATION_FILES = [
   '.versionrc',
@@ -9,7 +9,7 @@ const CONFIGURATION_FILES = [
   '.versionrc.js',
 ];
 
-module.exports.getConfiguration = () => {
+export const getConfiguration = () => {
   let config = {};
   const configPath = findUp.sync(CONFIGURATION_FILES);
   if (!configPath) {
@@ -24,7 +24,7 @@ module.exports.getConfiguration = () => {
       config = jsConfiguration;
     }
   } else {
-    config = JSON.parse(readFileSync(configPath));
+    config = JSON.parse(readFileSync(configPath) as any);
   }
 
   /**

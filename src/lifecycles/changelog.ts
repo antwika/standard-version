@@ -1,17 +1,17 @@
-const chalk = require('chalk');
-const conventionalChangelog = require('conventional-changelog');
-const fs = require('fs');
-const checkpoint = require('../checkpoint');
-const presetLoader = require('../preset-loader');
-const runLifecycleScript = require('../run-lifecycle-script');
-const writeFile = require('../write-file').default;
+import chalk from 'chalk';
+import conventionalChangelog from 'conventional-changelog';
+import fs from 'fs';
+import checkpoint from '../checkpoint';
+import presetLoader from '../preset-loader';
+import runLifecycleScript from '../run-lifecycle-script';
+import writeFile from '../write-file';
 
 const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;
 
-function createIfMissing(args) {
+function createIfMissing(args: any) {
   try {
-    fs.accessSync(args.infile, fs.F_OK);
-  } catch (err) {
+    fs.accessSync(args.infile, fs.constants.F_OK);
+  } catch (err: any) {
     if (err.code === 'ENOENT') {
       checkpoint(args, 'created %s', [args.infile]);
       // eslint-disable-next-line no-param-reassign
@@ -21,7 +21,7 @@ function createIfMissing(args) {
   }
 }
 
-function outputChangelog(args, newVersion) {
+function outputChangelog(args: any, newVersion: any) {
   return new Promise((resolve, reject) => {
     createIfMissing(args);
     const { header } = args;
@@ -39,9 +39,9 @@ function outputChangelog(args, newVersion) {
       preset: presetLoader(args),
       tagPrefix: args.tagPrefix,
     }, context, { merges: null, path: args.path })
-      .on('error', (err) => reject(err));
+      .on('error', (err: any) => reject(err));
 
-    changelogStream.on('data', (buffer) => {
+    changelogStream.on('data', (buffer: any) => {
       content += buffer.toString();
     });
 
@@ -52,12 +52,12 @@ function outputChangelog(args, newVersion) {
         const trimmed = `${header}\n${(content + oldContent)}`.trimEnd();
         writeFile(args, args.infile, `${trimmed}\n`);
       }
-      return resolve();
+      return resolve(true);
     });
   });
 }
 
-async function Changelog(args, newVersion) {
+async function Changelog(args: any, newVersion: any) {
   if (args.skip.changelog) return;
   await runLifecycleScript(args, 'prechangelog');
   await outputChangelog(args, newVersion);
@@ -66,4 +66,4 @@ async function Changelog(args, newVersion) {
 
 Changelog.START_OF_LAST_RELEASE_PATTERN = START_OF_LAST_RELEASE_PATTERN;
 
-module.exports = Changelog;
+export default Changelog;

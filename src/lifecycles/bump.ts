@@ -1,17 +1,17 @@
-const chalk = require('chalk');
-const fs = require('fs');
-const path = require('path');
-const semver = require('semver');
-const figures = require('figures');
-const DotGitignore = require('dotgitignore');
-const conventionalRecommendedBump = require('conventional-recommended-bump');
-const checkpoint = require('../checkpoint');
-const presetLoader = require('../preset-loader');
-const runLifecycleScript = require('../run-lifecycle-script');
-const writeFile = require('../write-file').default;
-const { resolveUpdaterObjectFromArgument } = require('../updaters');
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
+import semver from 'semver';
+import figures from 'figures';
+import DotGitignore from 'dotgitignore';
+import conventionalRecommendedBump from 'conventional-recommended-bump';
+import checkpoint from '../checkpoint';
+import presetLoader from '../preset-loader';
+import runLifecycleScript from '../run-lifecycle-script';
+import writeFile from '../write-file';
+import { resolveUpdaterObjectFromArgument } from '../updaters';
 
-let configsToUpdate = {};
+let configsToUpdate: any = {};
 
 const TypeList = ['major', 'minor', 'patch'].reverse();
 
@@ -21,7 +21,7 @@ const TypeList = ['major', 'minor', 'patch'].reverse();
  * @param version
  * @return {string}
  */
-function getCurrentActiveType(version) {
+function getCurrentActiveType(version: any) {
   for (const type of TypeList) {
     if (semver[type](version)) return type;
   }
@@ -31,7 +31,7 @@ function getCurrentActiveType(version) {
   return TypeList[0];
 }
 
-function isString(val) {
+function isString(val: any) {
   return typeof val === 'string';
 }
 
@@ -44,11 +44,11 @@ function isString(val) {
  * @param expectType
  * @return {boolean}
  */
-function shouldContinuePrerelease(version, expectType) {
+function shouldContinuePrerelease(version: any, expectType: any) {
   return getCurrentActiveType(version) === expectType;
 }
 
-function isInPrerelease(version) {
+function isInPrerelease(version: any) {
   return Array.isArray(semver.prerelease(version));
 }
 
@@ -59,11 +59,11 @@ function isInPrerelease(version) {
  * @param type
  * @return {number}
  */
-function getTypePriority(type) {
+function getTypePriority(type: any) {
   return TypeList.indexOf(type);
 }
 
-function getReleaseType(prerelease, expectedReleaseType, currentVersion) {
+function getReleaseType(prerelease: any, expectedReleaseType: any, currentVersion: any) {
   if (!isString(prerelease)) return expectedReleaseType;
   if (!isInPrerelease(currentVersion)) return `pre${expectedReleaseType}`;
 
@@ -76,7 +76,7 @@ function getReleaseType(prerelease, expectedReleaseType, currentVersion) {
   return `pre${expectedReleaseType}`;
 }
 
-function bumpVersion(releaseAs, currentVersion, args) {
+function bumpVersion(releaseAs: any, currentVersion: any, args: any) {
   return new Promise((resolve, reject) => {
     if (releaseAs) {
       resolve({
@@ -93,7 +93,7 @@ function bumpVersion(releaseAs, currentVersion, args) {
         path: args.path,
         tagPrefix: args.tagPrefix,
         lernaPackage: args.lernaPackage,
-      }, (err, release) => {
+      }, (err: any, release: any) => {
         if (err) reject(err);
         else resolve(release);
       });
@@ -107,9 +107,9 @@ function bumpVersion(releaseAs, currentVersion, args) {
  * @param newVersion version number to update to.
  * @return void
  */
-function updateConfigs(args, newVersion) {
+function updateConfigs(args: any, newVersion: any) {
   const dotgit = DotGitignore();
-  args.bumpFiles.forEach((bumpFile) => {
+  args.bumpFiles.forEach((bumpFile: any) => {
     const updater = resolveUpdaterObjectFromArgument(bumpFile);
     if (!updater) {
       return;
@@ -134,13 +134,13 @@ function updateConfigs(args, newVersion) {
       // flag any config files that we modify the version # for
       // as having been updated.
       configsToUpdate[updater.filename] = true;
-    } catch (err) {
+    } catch (err: any) {
       if (err.code !== 'ENOENT') console.warn(err.message);
     }
   });
 }
 
-async function Bump(args, version) {
+async function Bump(args: any, version: any) {
   // reset the cache of updated config files each
   // time we perform the version bump step.
   configsToUpdate = {};
@@ -151,7 +151,7 @@ async function Bump(args, version) {
   const stdout = await runLifecycleScript(args, 'prebump');
   // eslint-disable-next-line no-param-reassign
   if (stdout && stdout.trim().length) args.releaseAs = stdout.trim();
-  const release = await bumpVersion(args.releaseAs, version, args);
+  const release: any = await bumpVersion(args.releaseAs, version, args);
   if (!args.firstRelease) {
     const releaseType = getReleaseType(args.prerelease, release.releaseType, version);
     newVersion = semver.valid(releaseType) || semver.inc(version, releaseType, args.prerelease);
@@ -165,4 +165,4 @@ async function Bump(args, version) {
 
 Bump.getUpdatedConfigs = () => configsToUpdate;
 
-module.exports = Bump;
+export default Bump;

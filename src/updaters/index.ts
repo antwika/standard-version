@@ -1,21 +1,23 @@
-const path = require('path');
-const JSON_BUMP_FILES = require('../defaults').bumpFiles;
+import path from 'path';
+import defaults from '../defaults';
 
-const updatersByType = {
+const JSON_BUMP_FILES = defaults.bumpFiles;
+
+const updatersByType: any = {
   json: require('./types/json'),
   'plain-text': require('./types/plain-text'),
 };
 const PLAIN_TEXT_BUMP_FILES = ['VERSION.txt', 'version.txt'];
 
-function getUpdaterByType(type) {
+const getUpdaterByType = (type: any) => {
   const updater = updatersByType[type];
   if (!updater) {
     throw Error(`Unable to locate updater for provided type (${type}).`);
   }
   return updater;
-}
+};
 
-function getUpdaterByFilename(filename) {
+const getUpdaterByFilename = (filename: any) => {
   if (JSON_BUMP_FILES.includes(path.basename(filename))) {
     return getUpdaterByType('json');
   }
@@ -23,9 +25,9 @@ function getUpdaterByFilename(filename) {
     return getUpdaterByType('plain-text');
   }
   throw Error(`Unsupported file (${filename}) provided for bumping.\n Please specify the updater \`type\` or use a custom \`updater\`.`);
-}
+};
 
-function getCustomUpdaterFromPath(updater) {
+const getCustomUpdaterFromPath = (updater: any) => {
   if (typeof updater === 'string') {
     return require(path.resolve(process.cwd(), updater));
   }
@@ -33,16 +35,14 @@ function getCustomUpdaterFromPath(updater) {
     return updater;
   }
   throw new Error('Updater must be a string path or an object with readVersion and writeVersion methods');
-}
+};
 
 /**
  * Simple check to determine if the object provided is a compatible updater.
  */
-function isValidUpdater(obj) {
-  return (typeof obj.readVersion === 'function' && typeof obj.writeVersion === 'function');
-}
+const isValidUpdater = (obj: any) => (typeof obj.readVersion === 'function' && typeof obj.writeVersion === 'function');
 
-module.exports.resolveUpdaterObjectFromArgument = (arg) => {
+export const resolveUpdaterObjectFromArgument = (arg: any) => {
   /**
    * If an Object was not provided, we assume it's the path/filename
    * of the updater.
@@ -64,7 +64,7 @@ module.exports.resolveUpdaterObjectFromArgument = (arg) => {
     } else {
       updater.updater = getUpdaterByFilename(updater.filename);
     }
-  } catch (err) {
+  } catch (err: any) {
     if (err.code !== 'ENOENT') console.warn(`Unable to obtain updater for: ${JSON.stringify(arg)}\n - Error: ${err.message}\n - Skipping...`);
   }
   /**

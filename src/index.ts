@@ -1,18 +1,15 @@
-const fs = require('fs');
-const path = require('path');
-const bump = require('./lifecycles/bump');
-const changelog = require('./lifecycles/changelog');
-const commit = require('./lifecycles/commit');
-const latestSemverTag = require('./latest-semver-tag');
-const printError = require('./print-error');
-const tag = require('./lifecycles/tag');
-const { resolveUpdaterObjectFromArgument } = require('./updaters');
-const defaults = require('./defaults');
-const test = require('./test').default;
+import fs from 'fs';
+import path from 'path';
+import bump from './lifecycles/bump';
+import changelog from './lifecycles/changelog';
+import commit from './lifecycles/commit';
+import latestSemverTag from './latest-semver-tag';
+import printError from './print-error';
+import tag from './lifecycles/tag';
+import { resolveUpdaterObjectFromArgument } from './updaters';
+import defaults from './defaults';
 
-test();
-
-module.exports = async function standardVersion(argv) {
+const standardVersion = async (argv: any) => {
   /**
    * `--message` (`-m`) support will be removed in the next major version.
    */
@@ -81,8 +78,10 @@ module.exports = async function standardVersion(argv) {
     await changelog(args, newVersion);
     await commit(args, newVersion);
     await tag(newVersion, pkg ? pkg.private : false, args);
-  } catch (err) {
+  } catch (err: any) {
     printError(args, err.message);
     throw err;
   }
 };
+
+export default standardVersion;
