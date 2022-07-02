@@ -7,7 +7,8 @@ if (process.version.match(/v(\d+)\./)[1] < 6) {
   const standardVersion = require('../dist/index');
   const cmdParser = require('../dist/command');
   standardVersion(cmdParser.argv)
-    .catch(() => {
+    .catch((err) => {
+      console.log('Error:', err);
       process.exit(1);
     });
 }
