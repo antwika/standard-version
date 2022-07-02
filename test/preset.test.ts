@@ -1,24 +1,12 @@
 import shell from 'shelljs';
 import fs from 'fs';
-import chai from 'chai';
 import cli from '../src/command';
-import index from '../src/index';
+import standardVersion from '../src/index';
 
-chai.should();
-
-function exec(opt?: any) {
-  // const cli = require('../src/command');
-  // eslint-disable-next-line no-param-reassign
-  opt = cli.parse(`standard-version ${opt} --silent`);
-  // eslint-disable-next-line no-param-reassign
-  opt.skip = { commit: true, tag: true };
-  return index(opt);
-}
-
-describe('presets', () => {
+describe('preset', () => {
   beforeEach(() => {
     shell.rm('-rf', 'tmp');
-    shell.config.silent = true;
+    shell.config.silent = false;
     shell.mkdir('tmp');
     shell.cd('tmp');
     shell.exec('git init');
@@ -37,21 +25,23 @@ describe('presets', () => {
     shell.rm('-rf', 'tmp');
   });
 
-  // eslint-disable-next-line jest/expect-expect
   it('Conventional Commits (default)', async () => {
-    await exec();
+    const parsed = await cli.parse('standard-version --silent');
+    parsed.skip = { commit: true, tag: true };
+    await standardVersion(parsed);
     const content = fs.readFileSync('CHANGELOG.md', 'utf-8');
-    content.should.contain('### Features');
-    content.should.not.contain('### Performance Improvements');
-    content.should.not.contain('### Custom');
+    expect(content).toMatch('### Features');
+    expect(content).not.toMatch('### Performance Improvements');
+    expect(content).not.toMatch('### Custom');
   });
 
-  // eslint-disable-next-line jest/expect-expect
   it('Angular', async () => {
-    await exec('--preset angular');
+    const parsed = await cli.parse('standard-version --preset angular --silent');
+    parsed.skip = { commit: true, tag: true };
+    await standardVersion(parsed);
     const content = fs.readFileSync('CHANGELOG.md', 'utf-8');
-    content.should.contain('### Features');
-    content.should.contain('### Performance Improvements');
-    content.should.not.contain('### Custom');
+    expect(content).toMatch('### Features');
+    expect(content).toMatch('### Performance Improvements');
+    expect(content).not.toMatch('### Custom');
   });
 });
