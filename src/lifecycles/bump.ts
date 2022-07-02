@@ -140,7 +140,7 @@ function updateConfigs(args: any, newVersion: any) {
   });
 }
 
-async function Bump(args: any, version: any) {
+const Bump = async (args: any, version: any) => {
   // reset the cache of updated config files each
   // time we perform the version bump step.
   configsToUpdate = {};
@@ -149,6 +149,7 @@ async function Bump(args: any, version: any) {
   let newVersion = version;
   await runLifecycleScript(args, 'prerelease');
   const stdout = await runLifecycleScript(args, 'prebump');
+
   // eslint-disable-next-line no-param-reassign
   if (stdout && stdout.trim().length) args.releaseAs = stdout.trim();
   const release: any = await bumpVersion(args.releaseAs, version, args);
@@ -161,7 +162,7 @@ async function Bump(args: any, version: any) {
   }
   await runLifecycleScript(args, 'postbump');
   return newVersion;
-}
+};
 
 Bump.getUpdatedConfigs = () => configsToUpdate;
 

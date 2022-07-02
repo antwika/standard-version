@@ -6,7 +6,7 @@ import index from '../src/index';
 
 chai.should();
 
-function exec(opt) {
+function exec(opt?: any) {
   // const cli = require('../src/command');
   // eslint-disable-next-line no-param-reassign
   opt = cli.parse(`standard-version ${opt} --silent`);

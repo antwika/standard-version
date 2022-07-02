@@ -1,16 +1,18 @@
-const shell = require('shelljs');
-const fs = require('fs');
-const { Readable } = require('stream');
-const mockery = require('mockery');
-const stdMocks = require('std-mocks');
+import shell from 'shelljs';
+import fs from 'fs';
+import { Readable } from 'stream';
+import mockery from 'mockery';
+import stdMocks from 'std-mocks';
+import chai from 'chai';
+import index from '../src/index';
 
-require('chai').should();
+chai.should();
 
 function exec() {
   const cli = require('../src/command');
   const opt = cli.parse('standard-version');
   opt.skip = { commit: true, tag: true };
-  return require('../src/index')(opt);
+  return index(opt);
 }
 
 /**
@@ -22,7 +24,7 @@ function exec() {
  * changelog?: string | Error | Array<string | Error | (opt) => string | null>
  * tags?: string[] | Error
  */
-function mock({ bump, changelog, tags } = {}) {
+const mock = ({ bump, changelog, tags }: { bump?: any, changelog?: any, tags?: any} = {}) => {
   mockery.enable({ warnOnUnregistered: false, useCleanCache: true });
 
   mockery.registerMock('conventional-recommended-bump', (opt, cb) => {
@@ -56,7 +58,7 @@ function mock({ bump, changelog, tags } = {}) {
 
   stdMocks.use();
   return () => stdMocks.flush();
-}
+};
 
 describe('config files', () => {
   beforeEach(() => {

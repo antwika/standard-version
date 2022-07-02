@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "license": "MIT",
   "name": "@antwika/standard-version",
   "version": "0.1.1",
@@ -13,11 +12,11 @@
   "scripts": {
     "build": "npm run build:ts",
     "build:ts": "tsc",
-    "lint": "eslint ./src ./test",
-    "lint:fix": "eslint ./src ./test --fix",
+    "lint": "eslint ./src/**/*.ts ./test/**/*.ts",
+    "lint:fix": "eslint ./src/**/*.ts ./test/**/*.ts --fix",
     "posttest": "npm run lint",
-    "test": "nyc --reporter=lcov mocha --timeout=30000",
-    "test:unit": "mocha --exclude test/git.spec.js",
+    "test": "nyc --reporter=lcov ts-mocha --timeout=30000 test/**/*.spec.ts",
+    "test:unit": "ts-mocha --exclude test/git.spec.ts test/**/*.spec.ts",
     "coverage": "nyc report --reporter=lcov",
     "release": "npm run lint && npm run test && npm run build && node ./bin/cli.js",
     "prepare": "husky install"
@@ -49,6 +48,7 @@
     "nyc": "15.1.0",
     "shelljs": "0.8.5",
     "std-mocks": "1.0.1",
+    "ts-mocha": "^10.0.0",
     "typescript": "4.7.4"
   },
   "dependencies": {
