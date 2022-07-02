@@ -22,16 +22,13 @@ const TypeList = ['major', 'minor', 'patch'].reverse();
  * @return {string}
  */
 function getCurrentActiveType(version) {
-  const typelist = TypeList;
-  for (let i = 0; i < typelist.length; i += 1) {
-    if (semver[typelist[i]](version)) {
-      return typelist[i];
-    }
+  for (const type of TypeList) {
+    if (semver[type](version)) return type;
   }
 
   // Unclear to me what should be the default value? Or should an error be thrown instead?
-  console.warn(`A call to "getCurrentActiveType" ended up with no active types found and as fallback returned "${typelist[0]}" ...`);
-  return typelist[0];
+  console.warn(`A call to "getCurrentActiveType" ended up with no active types found and as fallback returned "${TypeList[0]}" ...`);
+  return TypeList[0];
 }
 
 function isString(val) {
