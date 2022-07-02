@@ -15,7 +15,7 @@
     "lint": "eslint ./src ./test",
     "lint:fix": "eslint ./src ./test --fix",
     "posttest": "npm run lint",
-    "test": "nyc mocha --timeout=30000",
+    "test": "nyc --reporter=lcov mocha --timeout=30000",
     "test:unit": "mocha --exclude test/git.spec.js",
     "coverage": "nyc report --reporter=lcov",
     "release": "bin/cli.js",
