@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/antwika/standard-version/compare/v0.1.0...v0.1.1) (2022-07-02)
+
+
+### Features
+
+* enable renovate on this fork ([0b00843](https://github.com/antwika/standard-version/commit/0b00843d553727ff8015cba8b715cbd0de4b1f5f))
+* enable renovate on this fork ([1a8bc30](https://github.com/antwika/standard-version/commit/1a8bc30e5968d3c471a4f7063506e0f92f269227))
+
+
+### Bug Fixes
+
+* include dist and bin into npm package ([e7b9c7f](https://github.com/antwika/standard-version/commit/e7b9c7f986fc024052f6d09e94a1cd8cc7c8145e))
+* remove unnecessary .editorconfig ([e8dfe6d](https://github.com/antwika/standard-version/commit/e8dfe6d82ce686b2ece8d589149d987cbf82e37e))
+
 ## 0.1.0 (2022-07-02)
 
 
