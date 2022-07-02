@@ -66,6 +66,10 @@
     "stringify-package": "^1.0.1",
     "yargs": "^16.0.0"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "repository": "git@github.com:antwika/standard-version.git",
   "bugs": {
     "url": "https://github.com/antwika/standard-version/issues"
