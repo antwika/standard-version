@@ -1,7 +1,3 @@
-module.exports.readVersion = function (contents) {
-  return contents
-}
+module.exports.readVersion = (contents) => contents;
 
-module.exports.writeVersion = function (_contents, version) {
-  return version
-}
+module.exports.writeVersion = (_contents, version) => version;

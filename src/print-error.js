@@ -1,12 +1,9 @@
-const chalk = require('chalk')
+const chalk = require('chalk');
 
-module.exports = function (args, msg, opts) {
+module.exports = (args, msg, opts) => {
   if (!args.silent) {
-    opts = Object.assign({
-      level: 'error',
-      color: 'red'
-    }, opts)
+    const combined = { level: 'error', color: 'red', ...opts };
 
-    console[opts.level](chalk[opts.color](msg))
+    console[combined.level](chalk[combined.color](msg));
   }
-}
+};

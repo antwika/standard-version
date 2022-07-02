@@ -1,12 +1,12 @@
-const chalk = require('chalk')
-const figures = require('figures')
-const util = require('util')
+const chalk = require('chalk');
+const figures = require('figures');
+const util = require('util');
 
-module.exports = function (argv, msg, args, figure) {
-  const defaultFigure = args.dryRun ? chalk.yellow(figures.tick) : chalk.green(figures.tick)
+module.exports = (argv, msg, args, figure) => {
+  const defaultFigure = args.dryRun ? chalk.yellow(figures.tick) : chalk.green(figures.tick);
   if (!argv.silent) {
-    console.info((figure || defaultFigure) + ' ' + util.format.apply(util, [msg].concat(args.map(function (arg) {
-      return chalk.bold(arg)
-    }))))
+    const input = [msg].concat(args.map((arg) => chalk.bold(arg)));
+    const temp = util.format(...input);
+    console.info(`${(figure || defaultFigure)} ${temp}`);
   }
-}
+};
