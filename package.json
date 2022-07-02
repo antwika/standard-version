@@ -18,7 +18,8 @@
     "test": "nyc mocha --timeout=30000",
     "test:unit": "mocha --exclude test/git.spec.js",
     "coverage": "nyc report --reporter=lcov",
-    "release": "bin/cli.js"
+    "release": "bin/cli.js",
+    "prepare": "husky install"
   },
   "nyc": {
     "exclude": [
@@ -39,6 +40,7 @@
     "eslint-plugin-jest": "^26.5.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.0.0",
+    "husky": "^8.0.1",
     "jest": "^28.1.2",
     "mocha": "^8.2.1",
     "mock-fs": "^4.13.0",
