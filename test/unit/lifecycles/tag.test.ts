@@ -1,5 +1,5 @@
 import tag from '../../../src/lifecycles/tag';
-import runLifecycleScript from '../../../src/run-lifecycle-script';
+import { runLifecycleScript } from '../../../src/run-lifecycle-script';
 import runExecFileLib from '../../../src/run-execFile';
 import checkpoint from '../../../src/checkpoint';
 
