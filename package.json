@@ -42,7 +42,6 @@
     "eslint-plugin-promise": "5.2.0",
     "husky": "8.0.1",
     "jest": "28.1.2",
-    "mockery": "2.1.0",
     "nyc": "15.1.0",
     "shelljs": "0.8.5",
     "std-mocks": "1.0.1",
