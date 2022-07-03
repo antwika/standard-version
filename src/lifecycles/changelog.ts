@@ -3,7 +3,7 @@ import conventionalChangelog from 'conventional-changelog';
 import fs from 'fs';
 import checkpoint from '../checkpoint';
 import presetLoader from '../preset-loader';
-import runLifecycleScript from '../run-lifecycle-script';
+import { runLifecycleScript } from '../run-lifecycle-script';
 import writeFile from '../write-file';
 
 const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;

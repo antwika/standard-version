@@ -3,9 +3,23 @@ import bump from './bump';
 import checkpoint from '../checkpoint';
 import formatCommitMessage from '../format-commit-message';
 import { runExecFile } from '../run-execFile';
-import runLifecycleScript from '../run-lifecycle-script';
+import { runLifecycleScript } from '../run-lifecycle-script';
 
-async function execCommit(args: any, newVersion: any) {
+// TODO: This type is incomplete and just types a subset of its properties.
+type CommitArgs = {
+  silent: boolean,
+  verify?: boolean,
+  n?: any,
+  sign?: boolean,
+  skip: {
+    commit?: boolean,
+    changelog?: boolean,
+    bump?: boolean,
+  }
+  [key: string]: any;
+};
+
+async function execCommit(args: CommitArgs, newVersion: string) {
   let msg = 'committing %s';
   let paths: any = [];
   const verify = args.verify === false || args.n ? ['--no-verify'] : [];
@@ -60,7 +74,7 @@ async function execCommit(args: any, newVersion: any) {
   );
 }
 
-const Commit = async (args: any, newVersion: any) => {
+const Commit = async (args: CommitArgs, newVersion: string) => {
   if (args.skip.commit) return;
   const message = await runLifecycleScript(args, 'precommit');
   // eslint-disable-next-line no-param-reassign

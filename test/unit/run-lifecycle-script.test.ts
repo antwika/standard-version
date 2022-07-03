@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import runLifecycleScript from '../../src/run-lifecycle-script';
+import { runLifecycleScript } from '../../src/run-lifecycle-script';
 import runExec from '../../src/run-exec';
 import checkpoint from '../../src/checkpoint';
 

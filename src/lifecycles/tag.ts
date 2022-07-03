@@ -4,7 +4,7 @@ import bump from './bump';
 import checkpoint from '../checkpoint';
 import formatCommitMessage from '../format-commit-message';
 import { runExecFile } from '../run-execFile';
-import runLifecycleScript from '../run-lifecycle-script';
+import { runLifecycleScript } from '../run-lifecycle-script';
 
 // TODO: This type is incomplete and just types a subset of its properties.
 type ExecTagArgs = {

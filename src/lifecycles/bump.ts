@@ -7,7 +7,7 @@ import DotGitignore from 'dotgitignore';
 import conventionalRecommendedBump from 'conventional-recommended-bump';
 import checkpoint from '../checkpoint';
 import presetLoader from '../preset-loader';
-import runLifecycleScript from '../run-lifecycle-script';
+import { runLifecycleScript } from '../run-lifecycle-script';
 import writeFile from '../write-file';
 import { resolveUpdaterObjectFromArgument } from '../updaters';
 
@@ -165,4 +165,9 @@ const Bump = async (args: any, version: any) => {
 
 Bump.getUpdatedConfigs = () => configsToUpdate;
 
-export default Bump;
+export const bump = Bump;
+
+export default {
+  bump: Bump,
+  getUpdatedConfigs: Bump.getUpdatedConfigs,
+};

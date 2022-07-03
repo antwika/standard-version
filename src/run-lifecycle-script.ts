@@ -10,7 +10,7 @@ type RunLifecycleScriptArgs = {
   [key: string]: any;
 };
 
-const runLifecycleScript = async (args: RunLifecycleScriptArgs, hookName: string) => {
+export const runLifecycleScript = async (args: RunLifecycleScriptArgs, hookName: string) => {
   const { scripts, silent } = args;
   if (!scripts || !scripts[hookName]) return undefined;
   const command = scripts[hookName];
@@ -21,4 +21,6 @@ const runLifecycleScript = async (args: RunLifecycleScriptArgs, hookName: string
   return runExec(args, command);
 };
 
-export default runLifecycleScript;
+export default {
+  runLifecycleScript,
+};

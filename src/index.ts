@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import bump from './lifecycles/bump';
+import { bump } from './lifecycles/bump';
 import changelog from './lifecycles/changelog';
 import commit from './lifecycles/commit';
 import latestSemverTag from './latest-semver-tag';
