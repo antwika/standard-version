@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import figures from 'figures';
 import checkpoint from './checkpoint';
 import runExec from './run-exec';
@@ -16,7 +15,7 @@ export const runLifecycleScript = async (args: RunLifecycleScriptArgs, hookName:
   const command = scripts[hookName];
   if (!silent) {
     checkpoint({ silent: !!silent }, 'Running lifecycle script "%s"', [hookName]);
-    checkpoint({ silent: !!silent }, '- execute command: "%s"', [command], chalk.blue(figures.info));
+    checkpoint({ silent: !!silent }, '- execute command: "%s"', [command], figures.info);
   }
   return runExec(args, command);
 };

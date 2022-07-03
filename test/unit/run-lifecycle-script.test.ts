@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { runLifecycleScript } from '../../src/run-lifecycle-script';
 import runExec from '../../src/run-exec';
 import checkpoint from '../../src/checkpoint';
@@ -34,6 +33,6 @@ describe('run-lifecycle-script', () => {
     expect(console.error).not.toHaveBeenCalled();
     expect(runExec).toHaveBeenCalledWith({ scripts: { 'hook-name': 'foo -h' }, silent: false }, 'foo -h');
     expect(checkpoint).toHaveBeenCalledWith({ silent: false }, 'Running lifecycle script "%s"', ['hook-name']);
-    expect(checkpoint).toHaveBeenCalledWith({ silent: false }, '- execute command: "%s"', ['foo -h'], chalk.blue('i'));
+    expect(checkpoint).toHaveBeenCalledWith({ silent: false }, '- execute command: "%s"', ['foo -h'], 'i');
   });
 });

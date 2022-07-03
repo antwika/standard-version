@@ -5,12 +5,6 @@ describe('checkpoint', () => {
     jest.clearAllMocks();
   });
 
-  it('can prefix with the default [green] figure(checkmark) and substitute in a [bolded] word into the logged message.', () => {
-    jest.spyOn(global.console, 'info').mockImplementation();
-    checkpoint({ silent: false }, 'Test %s', ['message']);
-    expect(console.info).toHaveBeenCalledWith('√ Test message');
-  });
-
   it('can prefix the message with a custom/overridden figure', () => {
     jest.spyOn(global.console, 'info').mockImplementation();
     checkpoint({ silent: false }, 'Test', [], 'X');

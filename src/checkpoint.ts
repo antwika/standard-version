@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import figures from 'figures';
 import util from 'util';
 
