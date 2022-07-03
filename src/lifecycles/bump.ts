@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import semver from 'semver';
@@ -157,7 +156,7 @@ const Bump = async (args: any, version: any) => {
     newVersion = semver.valid(releaseType) || semver.inc(version, releaseType, args.prerelease);
     updateConfigs(args, newVersion);
   } else {
-    checkpoint(args, 'skip version bump on first release', [], chalk.red(figures.cross));
+    checkpoint(args, 'skip version bump on first release', [], figures.cross);
   }
   await runLifecycleScript(args, 'postbump');
   return newVersion;

@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import conventionalChangelog from 'conventional-changelog';
 import fs from 'fs';
 import checkpoint from '../checkpoint';
@@ -47,7 +46,7 @@ function outputChangelog(args: any, newVersion: any) {
 
     changelogStream.on('end', () => {
       checkpoint(args, 'outputting changes to %s', [args.infile]);
-      if (args.dryRun) console.info(`\n---\n${chalk.gray(content.trim())}\n---\n`);
+      if (args.dryRun) console.info(`\n---\n${content.trim()}\n---\n`);
       else {
         const trimmed = `${header}\n${(content + oldContent)}`.trimEnd();
         writeFile(args, args.infile, `${trimmed}\n`);

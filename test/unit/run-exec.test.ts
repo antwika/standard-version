@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import util from 'util';
 import runExec from '../../src/run-exec';
 
@@ -19,13 +18,13 @@ describe('run-exec', () => {
     jest.spyOn(util, 'promisify').mockImplementationOnce(() => async () => ({ stderr: 'a warning', stdout: undefined }));
     jest.spyOn(global.console, 'warn').mockImplementation();
     await runExec({ dryRun: false }, 'foo -h');
-    expect(console.warn).toHaveBeenCalledWith(chalk.yellow('a warning'));
+    expect(console.warn).toHaveBeenCalledWith('a warning');
   });
 
   it('executes the command but returns a printed error message if there is a fatal error during execution.', async () => {
     jest.spyOn(util, 'promisify').mockImplementationOnce(() => async () => { throw new Error('Fatal error'); });
     jest.spyOn(global.console, 'error').mockImplementation();
     await expect(() => runExec({ dryRun: false }, 'foo -h')).rejects.toThrowError('Fatal error');
-    expect(console.error).toHaveBeenCalledWith(chalk.red('Fatal error'));
+    expect(console.error).toHaveBeenCalledWith('Fatal error');
   });
 });

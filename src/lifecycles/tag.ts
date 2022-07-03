@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import figures from 'figures';
 import bump from './bump';
 import checkpoint from '../checkpoint';
@@ -42,7 +41,7 @@ async function execTag(newVersion: string, pkgPrivate: boolean, args: ExecTagArg
     }
   }
 
-  checkpoint(args, 'Run `%s` to publish', [message], chalk.blue(figures.info));
+  checkpoint(args, 'Run `%s` to publish', [message], figures.info);
 }
 
 const Tag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) => {

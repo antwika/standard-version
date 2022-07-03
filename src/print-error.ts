@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 // TODO: This type is incomplete and just types a subset of its properties.
 type PrintErrorArgs = {
   silent?: boolean,
@@ -17,10 +15,9 @@ const printError = (args: PrintErrorArgs, msg: string, opts?: PrintErrorOpts) =>
   if (!args.silent) {
     const combined = { level: 'error', color: 'red', ...opts };
 
-    const anyChalk = chalk as any;
     const logger = console as any;
 
-    logger[combined.level](anyChalk[combined.color](msg));
+    logger[combined.level](msg);
   }
 };
 
