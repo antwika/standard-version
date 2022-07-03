@@ -2,9 +2,9 @@ import stringifyPackage from 'stringify-package';
 import detectIndent from 'detect-indent';
 import detectNewline from 'detect-newline';
 
-export const readVersion = (contents: any) => JSON.parse(contents).version;
+export const readVersion = (contents: string): string => JSON.parse(contents).version;
 
-export const writeVersion = (contents: any, version: any) => {
+export const writeVersion = (contents: string, version: string): string => {
   const json = JSON.parse(contents);
   const { indent } = detectIndent(contents);
   const newline = detectNewline(contents);
@@ -18,4 +18,4 @@ export const writeVersion = (contents: any, version: any) => {
   return stringifyPackage(json, indent, newline);
 };
 
-export const isPrivate = (contents: any) => JSON.parse(contents).private;
+export const isPrivate = (contents: string): boolean => JSON.parse(contents).private;

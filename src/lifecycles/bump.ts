@@ -111,9 +111,8 @@ function updateConfigs(args: any, newVersion: any) {
   const dotgit = DotGitignore();
   args.bumpFiles.forEach((bumpFile: any) => {
     const updater = resolveUpdaterObjectFromArgument(bumpFile);
-    if (!updater) {
-      return;
-    }
+    if (!updater) return;
+    if (!updater.filename) return;
     const configPath = path.resolve(process.cwd(), updater.filename);
     try {
       if (dotgit.ignore(configPath)) return;
@@ -124,12 +123,12 @@ function updateConfigs(args: any, newVersion: any) {
       checkpoint(
         args,
         `bumping version in ${updater.filename} from %s to %s`,
-        [updater.updater.readVersion(contents), newVersion],
+        [updater.readVersion(contents), newVersion],
       );
       writeFile(
         args,
         configPath,
-        updater.updater.writeVersion(contents, newVersion),
+        updater.writeVersion(contents, newVersion),
       );
       // flag any config files that we modify the version # for
       // as having been updated.

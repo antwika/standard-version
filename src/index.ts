@@ -7,7 +7,7 @@ import latestSemverTag from './latest-semver-tag';
 import printError from './print-error';
 import tag from './lifecycles/tag';
 import { resolveUpdaterObjectFromArgument } from './updaters';
-import defaults from './defaults';
+import { getDefaults } from './defaults';
 
 const standardVersion = async (argv: any) => {
   /**
@@ -43,20 +43,21 @@ const standardVersion = async (argv: any) => {
    * If an argument for `packageFiles` provided, we include it as a "default" `bumpFile`.
    */
   if (argv.packageFiles) {
-    defaults.bumpFiles = defaults.bumpFiles.concat(argv.packageFiles);
+    getDefaults().bumpFiles = getDefaults().bumpFiles.concat(argv.packageFiles);
   }
 
-  const args = { ...defaults, ...argv };
+  const args = { ...getDefaults(), ...argv };
   let pkg;
   for (const packageFile of args.packageFiles) {
     const updater = resolveUpdaterObjectFromArgument(packageFile);
     if (!updater) return;
+    if (!updater.filename) return;
     const pkgPath = path.resolve(process.cwd(), updater.filename);
     try {
       const contents = fs.readFileSync(pkgPath, 'utf8');
       pkg = {
-        version: updater.updater.readVersion(contents),
-        private: typeof updater.updater.isPrivate === 'function' ? updater.updater.isPrivate(contents) : false,
+        version: updater.readVersion(contents),
+        private: typeof updater.isPrivate === 'function' ? updater.isPrivate(contents) : false,
       };
       break;
     } catch (err) {

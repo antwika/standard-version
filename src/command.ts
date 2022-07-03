@@ -1,16 +1,16 @@
 import spec from 'conventional-changelog-config-spec';
 import y from 'yargs';
 import { getConfiguration } from './configuration';
-import defaults from './defaults';
+import { getDefaults } from './defaults';
 
 const yargs = y
   .usage('Usage: $0 [options]')
   .option('packageFiles', {
-    default: defaults.packageFiles,
+    default: getDefaults().packageFiles,
     array: true,
   })
   .option('bumpFiles', {
-    default: defaults.bumpFiles,
+    default: getDefaults().bumpFiles,
     array: true,
   })
   .option('release-as', {
@@ -27,7 +27,7 @@ const yargs = y
   .option('infile', {
     alias: 'i',
     describe: 'Read the CHANGELOG from this file',
-    default: defaults.infile,
+    default: getDefaults().infile,
   })
   .option('message', {
     alias: ['m'],
@@ -38,53 +38,53 @@ const yargs = y
     alias: 'f',
     describe: 'Is this the first release?',
     type: 'boolean',
-    default: defaults.firstRelease,
+    default: getDefaults().firstRelease,
   })
   .option('sign', {
     alias: 's',
     describe: 'Should the git commit and tag be signed?',
     type: 'boolean',
-    default: defaults.sign,
+    default: getDefaults().sign,
   })
   .option('no-verify', {
     alias: 'n',
     describe: 'Bypass pre-commit or commit-msg git hooks during the commit phase',
     type: 'boolean',
-    default: defaults.noVerify,
+    default: getDefaults().noVerify,
   })
   .option('commit-all', {
     alias: 'a',
     describe: 'Commit all staged changes, not just files affected by standard-version',
     type: 'boolean',
-    default: defaults.commitAll,
+    default: getDefaults().commitAll,
   })
   .option('silent', {
     describe: 'Don\'t print logs and errors',
     type: 'boolean',
-    default: defaults.silent,
+    default: getDefaults().silent,
   })
   .option('tag-prefix', {
     alias: 't',
     describe: 'Set a custom prefix for the git tag to be created',
     type: 'string',
-    default: defaults.tagPrefix,
+    default: getDefaults().tagPrefix,
   })
   .option('scripts', {
     describe: 'Provide scripts to execute for lifecycle events (prebump, precommit, etc.,)',
-    default: defaults.scripts,
+    default: getDefaults().scripts,
   })
   .option('skip', {
     describe: 'Map of steps in the release process that should be skipped',
-    default: defaults.skip,
+    default: getDefaults().skip,
   })
   .option('dry-run', {
     type: 'boolean',
-    default: defaults.dryRun,
+    default: getDefaults().dryRun,
     describe: 'See the commands that running standard-version would run',
   })
   .option('git-tag-fallback', {
     type: 'boolean',
-    default: defaults.gitTagFallback,
+    default: getDefaults().gitTagFallback,
     describe: 'fallback to git tags for version, if no meta-information file is found (e.g., package.json)',
   })
   .option('path', {
@@ -97,7 +97,7 @@ const yargs = y
   })
   .option('preset', {
     type: 'string',
-    default: defaults.preset,
+    default: getDefaults().preset,
     describe: 'Commit message guideline preset',
   })
   .option('lerna-package', {
@@ -126,7 +126,7 @@ Object.keys(spec.properties).forEach((propertyKey) => {
   yargs.option(propertyKey, {
     type: property.type,
     describe: property.description,
-    default: defaults[propertyKey] ? defaults[propertyKey] : property.default,
+    default: getDefaults()[propertyKey] ? getDefaults()[propertyKey] : property.default,
     group: 'Preset Configuration:',
   });
 });
