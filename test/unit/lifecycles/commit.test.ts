@@ -1,7 +1,5 @@
-import path from 'path';
 import bump from '../../../src/lifecycles/bump';
 import checkpoint from '../../../src/checkpoint';
-import formatCommitMessage from '../../../src/format-commit-message';
 import { runExecFile } from '../../../src/run-execFile';
 import runLifecycleScriptLib from '../../../src/run-lifecycle-script';
 import commit from '../../../src/lifecycles/commit';
