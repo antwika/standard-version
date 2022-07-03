@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 // TODO: This type is incomplete and just types a subset of its properties.
 type PrintErrorArgs = {
-  silent: boolean,
+  silent?: boolean,
   [key: string]: any;
 }
 

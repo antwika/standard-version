@@ -1,12 +1,19 @@
 import { promisify } from 'util';
+import { exec } from 'child_process';
 import printError from './print-error';
 
-const exec = promisify(require('child_process').exec);
+// TODO: This type is incomplete and just types a subset of its properties.
+type RunExecArgs = {
+  silent?: boolean,
+  dryRun?: boolean,
+  [key: string]: any;
+};
 
-const runExec = async (args: any, cmd: any) => {
+const runExec = async (args: RunExecArgs, cmd: string) => {
+  const execPromise = promisify(exec);
   if (args.dryRun) return undefined;
   try {
-    const { stderr, stdout } = await exec(cmd);
+    const { stderr, stdout } = await execPromise(cmd);
     // If exec returns content in stderr, but no error, print it as a warning
     if (stderr) printError(args, stderr, { level: 'warn', color: 'yellow' });
     return stdout;

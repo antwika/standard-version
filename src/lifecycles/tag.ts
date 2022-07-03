@@ -16,6 +16,9 @@ async function execTag(newVersion: any, pkgPrivate: any, args: any) {
   checkpoint(args, 'tagging release %s%s', [args.tagPrefix, newVersion]);
   await runExecFile(args, 'git', ['tag', tagOption, args.tagPrefix + newVersion, '-m', `${formatCommitMessage(args.releaseCommitMessageFormat, newVersion)}`]);
   const currentBranch = await runExecFile('', 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+  if (currentBranch === undefined) {
+    throw new Error('The current branch is "undefined" and the execTag function could not properly continue...');
+  }
   let message = `git push --follow-tags origin ${currentBranch.trim()}`;
   if (pkgPrivate !== true && bump.getUpdatedConfigs()['package.json']) {
     message += ' && npm publish';
