@@ -123,10 +123,11 @@ const yargs = y
 
 Object.keys(spec.properties).forEach((propertyKey) => {
   const property = spec.properties[propertyKey];
+  const defaults = getDefaults() as any;
   yargs.option(propertyKey, {
     type: property.type,
     describe: property.description,
-    default: getDefaults()[propertyKey] ? getDefaults()[propertyKey] : property.default,
+    default: defaults[propertyKey] ? defaults[propertyKey] : property.default,
     group: 'Preset Configuration:',
   });
 });
