@@ -11,9 +11,9 @@ type CheckpointArgv = {
 type CheckpointArgs = string[];
 
 const checkpoint = (argv: CheckpointArgv, msg: string, args: CheckpointArgs, figure?: string) => {
-  const defaultFigure = chalk.green(figures.tick);
+  const defaultFigure = figures.tick;
   if (!argv.silent) {
-    const input = [msg].concat(args.map((arg: any) => chalk.bold(arg)));
+    const input = [msg].concat(args.map((arg: any) => arg));
     const temp = util.format(...input);
     console.info(`${(figure || defaultFigure)} ${temp}`);
   }

@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import checkpoint from '../../src/checkpoint';
 
 describe('checkpoint', () => {
@@ -9,7 +8,7 @@ describe('checkpoint', () => {
   it('can prefix with the default [green] figure(checkmark) and substitute in a [bolded] word into the logged message.', () => {
     jest.spyOn(global.console, 'info').mockImplementation();
     checkpoint({ silent: false }, 'Test %s', ['message']);
-    expect(console.info).toHaveBeenCalledWith(`${chalk.green('√')} Test ${chalk.bold('message')}`);
+    expect(console.info).toHaveBeenCalledWith('√ Test message');
   });
 
   it('can prefix the message with a custom/overridden figure', () => {
