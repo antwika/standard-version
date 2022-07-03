@@ -1,9 +1,9 @@
 import spec from 'conventional-changelog-config-spec';
-import y from 'yargs';
+import yargs from 'yargs';
 import { getConfiguration } from './configuration';
 import { getDefaults } from './defaults';
 
-const yargs = y
+const command = yargs
   .usage('Usage: $0 [options]')
   .option('packageFiles', {
     default: getDefaults().packageFiles,
@@ -124,7 +124,7 @@ const yargs = y
 Object.keys(spec.properties).forEach((propertyKey) => {
   const property = spec.properties[propertyKey];
   const defaults = getDefaults() as any;
-  yargs.option(propertyKey, {
+  command.option(propertyKey, {
     type: property.type,
     describe: property.description,
     default: defaults[propertyKey] ? defaults[propertyKey] : property.default,
@@ -132,4 +132,4 @@ Object.keys(spec.properties).forEach((propertyKey) => {
   });
 });
 
-export default yargs;
+export default command;
