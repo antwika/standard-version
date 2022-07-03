@@ -2,7 +2,7 @@ import path from 'path';
 import bump from './bump';
 import checkpoint from '../checkpoint';
 import formatCommitMessage from '../format-commit-message';
-import runExecFile from '../run-execFile';
+import { runExecFile } from '../run-execFile';
 import runLifecycleScript from '../run-lifecycle-script';
 
 async function execCommit(args: any, newVersion: any) {

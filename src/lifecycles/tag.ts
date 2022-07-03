@@ -3,10 +3,21 @@ import figures from 'figures';
 import bump from './bump';
 import checkpoint from '../checkpoint';
 import formatCommitMessage from '../format-commit-message';
-import runExecFile from '../run-execFile';
+import { runExecFile } from '../run-execFile';
 import runLifecycleScript from '../run-lifecycle-script';
 
-async function execTag(newVersion: any, pkgPrivate: any, args: any) {
+// TODO: This type is incomplete and just types a subset of its properties.
+type ExecTagArgs = {
+  silent: boolean,
+  tagPrefix: string,
+  releaseCommitMessageFormat: string,
+  skip: {
+    tag?: boolean,
+  }
+  [key: string]: any;
+};
+
+async function execTag(newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) {
   let tagOption;
   if (args.sign) {
     tagOption = '-s';
@@ -34,7 +45,7 @@ async function execTag(newVersion: any, pkgPrivate: any, args: any) {
   checkpoint(args, 'Run `%s` to publish', [message], chalk.blue(figures.info));
 }
 
-const Tag = async (newVersion: any, pkgPrivate: any, args: any) => {
+const Tag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) => {
   if (args.skip.tag) return;
   await runLifecycleScript(args, 'pretag');
   await execTag(newVersion, pkgPrivate, args);

@@ -12,7 +12,11 @@ type RunExecFileArgs = string | {
 // TODO: This type is incomplete and just types a subset of its properties.
 type RunExecFileCmdArgs = string[] | null | undefined;
 
-const runExecFile = async (args: RunExecFileArgs, cmd: string, cmdArgs: RunExecFileCmdArgs) => {
+export const runExecFile = async (
+  args: RunExecFileArgs,
+  cmd: string,
+  cmdArgs: RunExecFileCmdArgs,
+) => {
   const execFilePromise = promisify(execFile);
   if (typeof args === 'string') return undefined;
   if (args.dryRun) return undefined;
@@ -28,4 +32,6 @@ const runExecFile = async (args: RunExecFileArgs, cmd: string, cmdArgs: RunExecF
   }
 };
 
-export default runExecFile;
+export default {
+  runExecFile,
+};

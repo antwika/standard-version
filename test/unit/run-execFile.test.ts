@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import util from 'util';
-import runExecFile from '../../src/run-execFile';
+import { runExecFile } from '../../src/run-execFile';
 
 jest.mock('child_process');
 jest.mock('util');
