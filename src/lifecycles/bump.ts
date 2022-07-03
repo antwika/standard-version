@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import semver from 'semver';
-import figures from 'figures';
 import DotGitignore from 'dotgitignore';
 import conventionalRecommendedBump from 'conventional-recommended-bump';
 import checkpoint from '../checkpoint';
@@ -156,7 +155,7 @@ const Bump = async (args: any, version: any) => {
     newVersion = semver.valid(releaseType) || semver.inc(version, releaseType, args.prerelease);
     updateConfigs(args, newVersion);
   } else {
-    checkpoint(args, 'skip version bump on first release', [], figures.cross);
+    checkpoint(args, 'skip version bump on first release', [], '[SKIP]');
   }
   await runLifecycleScript(args, 'postbump');
   return newVersion;
