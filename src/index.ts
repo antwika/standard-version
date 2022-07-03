@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { bump } from './lifecycles/bump';
-import changelog from './lifecycles/changelog';
+import { changelog, START_OF_LAST_RELEASE_PATTERN } from './lifecycles/changelog';
 import commit from './lifecycles/commit';
 import latestSemverTag from './latest-semver-tag';
 import printError from './print-error';
@@ -35,8 +35,8 @@ const standardVersion = async (argv: any) => {
     }
   }
 
-  if (argv.header && argv.header.search(changelog.START_OF_LAST_RELEASE_PATTERN) !== -1) {
-    throw Error(`custom changelog header must not match ${changelog.START_OF_LAST_RELEASE_PATTERN}`);
+  if (argv.header && argv.header.search(START_OF_LAST_RELEASE_PATTERN) !== -1) {
+    throw Error(`custom changelog header must not match ${START_OF_LAST_RELEASE_PATTERN}`);
   }
 
   /**

@@ -6,7 +6,7 @@ import presetLoader from '../preset-loader';
 import { runLifecycleScript } from '../run-lifecycle-script';
 import writeFile from '../write-file';
 
-const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;
+export const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;
 
 function createIfMissing(args: any) {
   try {
@@ -66,4 +66,4 @@ async function Changelog(args: any, newVersion: any) {
 
 Changelog.START_OF_LAST_RELEASE_PATTERN = START_OF_LAST_RELEASE_PATTERN;
 
-export default Changelog;
+export const changelog = Changelog;
