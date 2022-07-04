@@ -10,8 +10,6 @@ type Updater = {
   filename?: string,
 };
 
-const JSON_BUMP_FILES = getDefaults().bumpFiles;
-
 const updatersByType: Record<string, Updater> = {
   json: jsonUpdater,
   'plain-text': plainTextUpdater,
@@ -26,8 +24,9 @@ const getUpdaterByType = (type: string) => {
   return updater;
 };
 
-const getUpdaterByFilename = (filename: string) => {
-  if (JSON_BUMP_FILES.includes(path.basename(filename))) {
+export const getUpdaterByFilename = (filename: string) => {
+  const jsonBumpFiles = getDefaults().bumpFiles;
+  if (jsonBumpFiles.includes(path.basename(filename))) {
     return getUpdaterByType('json');
   }
   if (PLAIN_TEXT_BUMP_FILES.includes(filename)) {

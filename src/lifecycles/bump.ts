@@ -161,11 +161,9 @@ const Bump = async (args: any, version: any) => {
   return newVersion;
 };
 
-Bump.getUpdatedConfigs = () => configsToUpdate;
-
 export const bump = Bump;
 
 export default {
   bump: Bump,
-  getUpdatedConfigs: Bump.getUpdatedConfigs,
+  getUpdatedConfigs: () => configsToUpdate,
 };

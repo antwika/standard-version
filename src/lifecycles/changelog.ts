@@ -7,7 +7,7 @@ import writeFile from '../write-file';
 
 export const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;
 
-function createIfMissing(args: any) {
+export const createIfMissing = (args: any) => {
   try {
     fs.accessSync(args.infile, fs.constants.F_OK);
   } catch (err: any) {
@@ -18,9 +18,10 @@ function createIfMissing(args: any) {
       writeFile(args, args.infile, '\n');
     }
   }
-}
+};
 
-function outputChangelog(args: any, newVersion: any) {
+// eslint-disable-next-line arrow-body-style
+const outputChangelog = (args: any, newVersion: any) => {
   return new Promise((resolve, reject) => {
     createIfMissing(args);
     const { header } = args;
@@ -28,6 +29,7 @@ function outputChangelog(args: any, newVersion: any) {
     let oldContent = args.dryRun ? '' : fs.readFileSync(args.infile, 'utf-8');
     const oldContentStart = oldContent.search(START_OF_LAST_RELEASE_PATTERN);
     // find the position of the last release and remove header:
+    console.log('oldContentStart:', oldContentStart);
     if (oldContentStart !== -1) {
       oldContent = oldContent.substring(oldContentStart);
     }
@@ -54,7 +56,7 @@ function outputChangelog(args: any, newVersion: any) {
       return resolve(true);
     });
   });
-}
+};
 
 async function Changelog(args: any, newVersion: any) {
   if (args.skip.changelog) return;

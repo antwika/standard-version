@@ -39,14 +39,15 @@ const standardVersion = async (argv: any) => {
     throw Error(`custom changelog header must not match ${START_OF_LAST_RELEASE_PATTERN}`);
   }
 
+  const defaults = getDefaults();
   /**
    * If an argument for `packageFiles` provided, we include it as a "default" `bumpFile`.
    */
   if (argv.packageFiles) {
-    getDefaults().bumpFiles = getDefaults().bumpFiles.concat(argv.packageFiles);
+    defaults.bumpFiles = defaults.bumpFiles.concat(argv.packageFiles);
   }
 
-  const args = { ...getDefaults(), ...argv };
+  const args = { ...defaults, ...argv };
   let pkg;
   for (const packageFile of args.packageFiles) {
     const updater = resolveUpdaterObjectFromArgument(packageFile);

@@ -1,9 +1,8 @@
 import assert from 'assert';
+import * as defaults from '../../../src/defaults';
 import { resolveUpdaterObjectFromArgument } from '../../../src/updaters/index';
 
-jest.mock('../../../src/defaults', () => ({
-  getDefaults: () => ({ bumpFiles: [] }),
-}));
+jest.mock('../../../src/defaults');
 
 const readVersionMock = jest.fn();
 const writeVersionMock = jest.fn();
@@ -37,7 +36,9 @@ describe('index', () => {
   });
 
   it('can resolve the "plain-text" updater by passing "VERSION.txt" as argument.', () => {
+    jest.spyOn(defaults, 'getDefaults').mockImplementationOnce(() => ({ bumpFiles: [] } as any));
     const plainTextUpdater = resolveUpdaterObjectFromArgument('VERSION.txt');
+    expect(defaults.getDefaults).toHaveBeenCalled();
     expect(plainTextUpdater).toBeTruthy();
     assert(plainTextUpdater !== false);
     plainTextUpdater.readVersion('content');
@@ -57,12 +58,20 @@ describe('index', () => {
   });
 
   it('failes to resolve updater when a non-existant updater type is passed.', () => {
+    // jest.spyOn(defaults, 'getDefaults').mockImplementationOnce(() => ({ bumpFiles: [] } as any));
     const noUpdater = resolveUpdaterObjectFromArgument({ type: 'does-not-exist' });
     expect(noUpdater).toBeFalsy();
   });
 
   it('failes to resolve updater when a non-supported filename is passed.', () => {
+    jest.spyOn(defaults, 'getDefaults').mockImplementationOnce(() => ({ bumpFiles: [] } as any));
     const noUpdater = resolveUpdaterObjectFromArgument('is-not-supported');
     expect(noUpdater).toBeFalsy();
+  });
+
+  it('can resolve updater by filename.', () => {
+    jest.spyOn(defaults, 'getDefaults').mockImplementationOnce(() => ({ bumpFiles: ['updater-filename'] } as any));
+    const updater = resolveUpdaterObjectFromArgument('updater-filename');
+    expect(updater).toBeDefined();
   });
 });

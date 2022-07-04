@@ -16,3 +16,5 @@ npm-debug.log
 coverage
 
 dist
+tmp
+yarn-error.log

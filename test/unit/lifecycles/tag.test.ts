@@ -2,10 +2,12 @@ import tag from '../../../src/lifecycles/tag';
 import { runLifecycleScript } from '../../../src/run-lifecycle-script';
 import runExecFileLib from '../../../src/run-execFile';
 import checkpoint from '../../../src/checkpoint';
+import bumpLib from '../../../src/lifecycles/bump';
 
 jest.mock('../../../src/run-lifecycle-script');
 jest.mock('../../../src/run-execFile');
 jest.mock('../../../src/checkpoint');
+jest.mock('../../../src/lifecycles/bump');
 
 describe('tag', () => {
   beforeEach(() => {
@@ -65,11 +67,7 @@ describe('tag', () => {
       'git',
       ['tag', '-a', 'v1.2.3', '-m', 'Format message 1.2.3'],
     );
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(
-      '',
-      'git',
-      ['rev-parse', '--abbrev-ref', 'HEAD'],
-    );
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
   });
 
   it('calls.', async () => {
@@ -114,10 +112,65 @@ describe('tag', () => {
       'git',
       ['tag', '-a', 'v1.2.3', '-m', 'Format message 1.2.3'],
     );
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(
-      '',
-      'git',
-      ['rev-parse', '--abbrev-ref', 'HEAD'],
-    );
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+  });
+
+  it('calls "git tag" with "-s" flag for signing.', async () => {
+    jest.spyOn(runExecFileLib, 'runExecFile').mockResolvedValue('main');
+    jest.spyOn(bumpLib, 'getUpdatedConfigs').mockImplementationOnce(() => ({ 'package.json': true }));
+
+    await tag('1.2.3', false, {
+      silent: true,
+      tagPrefix: 'v',
+      releaseCommitMessageFormat: 'Format message {{currentTag}}',
+      skip: {
+        tag: false,
+      },
+      sign: true,
+    });
+
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'tagging release %s%s', ['v', '1.2.3']);
+    expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'Run `%s` to publish', ['git push --follow-tags origin main && npm publish'], '[INFO]');
+  });
+
+  it('appends "--tag prerelease" to the "npm publish" command if argument "prerelease" is an empty string.', async () => {
+    jest.spyOn(runExecFileLib, 'runExecFile').mockResolvedValue('main');
+    jest.spyOn(bumpLib, 'getUpdatedConfigs').mockImplementationOnce(() => ({ 'package.json': true }));
+
+    await tag('1.2.3', false, {
+      silent: true,
+      tagPrefix: 'v',
+      releaseCommitMessageFormat: 'Format message {{currentTag}}',
+      skip: {
+        tag: false,
+      },
+      sign: true,
+      prerelease: '',
+    });
+
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'tagging release %s%s', ['v', '1.2.3']);
+    expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'Run `%s` to publish', ['git push --follow-tags origin main && npm publish --tag prerelease'], '[INFO]');
+  });
+
+  it('appends "--tag custom-prerelease" to the "npm publish" command if argument "prerelease" is an "custom-prerelease".', async () => {
+    jest.spyOn(runExecFileLib, 'runExecFile').mockResolvedValue('main');
+    jest.spyOn(bumpLib, 'getUpdatedConfigs').mockImplementationOnce(() => ({ 'package.json': true }));
+
+    await tag('1.2.3', false, {
+      silent: true,
+      tagPrefix: 'v',
+      releaseCommitMessageFormat: 'Format message {{currentTag}}',
+      skip: {
+        tag: false,
+      },
+      sign: true,
+      prerelease: 'custom-prerelease',
+    });
+
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'tagging release %s%s', ['v', '1.2.3']);
+    expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'Run `%s` to publish', ['git push --follow-tags origin main && npm publish --tag custom-prerelease'], '[INFO]');
   });
 });

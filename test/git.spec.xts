@@ -128,7 +128,6 @@ describe('git', () => {
     });
   });
 
-/*
   // eslint-disable-next-line jest/expect-expect
   it('formats the commit and tag messages appropriately', async () => {
     mock({ bump: 'minor', tags: ['v1.0.0'] });
@@ -163,7 +162,7 @@ describe('git', () => {
     content.should.match(/1\.0\.1/);
     content.should.not.match(/legacy header format/);
   });
-
+/*
   // eslint-disable-next-line jest/expect-expect
   it('does not run git hooks if the --no-verify flag is passed', async () => {
     fs.writeFileSync('.git/hooks/pre-commit', '#!/bin/sh\necho "precommit ran"\nexit 1', 'utf-8');

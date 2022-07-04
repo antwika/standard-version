@@ -1,6 +1,19 @@
 import yargs from 'yargs';
 import command from '../../src/command';
 
+jest.mock('conventional-changelog-config-spec', () => ({
+  properties: {
+    types: { default: [{ type: 'test', hidden: false }] },
+    preMajor: { default: false },
+    commitUrlFormat: { default: 'a test commit url format' },
+    compareUrlFormat: { default: 'a test compare url format' },
+    issueUrlFormat: { default: 'a test issue url format' },
+    userUrlFormat: { default: 'a test user url format' },
+    releaseCommitMessageFormat: { default: 'test release commit message format' },
+    issuePrefixes: { default: 'a test issue prefixes' },
+  },
+}));
+
 jest.mock('yargs', () => ({
   usage: jest.fn().mockReturnThis(),
   option: jest.fn().mockReturnThis(),
@@ -14,6 +27,7 @@ jest.mock('yargs', () => ({
 
 jest.mock('../../src/defaults', () => ({
   getDefaults: jest.fn().mockReturnValue({
+    preMajor: true,
     packageFiles: ['testfile-1.json'],
     bumpFiles: ['testfile-1.json', 'testfile-2.json'],
     infile: 'test-changelog.md',
@@ -60,6 +74,7 @@ jest.mock('conventional-changelog-config-spec', () => ({
 
 describe('command', () => {
   it('calls the yargs builder with expected values', () => {
+    command.getParser();
     expect(command).toBeDefined();
     expect(yargs.usage).toHaveBeenCalledWith('Usage: $0 [options]');
     expect(yargs.option).toHaveBeenCalledWith('packageFiles', {

@@ -24,7 +24,7 @@ describe('commit', () => {
 
   it('sets the "releaseCommitMessageFormat" if the return value of runLifecycleScript is defined.', async () => {
     jest.spyOn(runLifecycleScriptLib, 'runLifecycleScript').mockImplementationOnce(async () => 'returned value from runLifecycleScript');
-    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(async () => []);
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => []);
     const result = await commit({
       silent: true,
       verify: false,
@@ -35,51 +35,64 @@ describe('commit', () => {
         changelog: true,
       },
     }, '1.2.3');
-    expect(checkpoint).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'returned value from runLifecycleScript',
-        sign: false,
-        silent: true,
-        skip: {
-          bump: false,
-          changelog: true,
-          commit: false,
-        },
-        verify: false,
-      },
-      'committing %s',
-      [],
-    );
+    expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
     expect(result).not.toBeDefined();
     expect(runExecFile).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'returned value from runLifecycleScript',
-        sign: false,
-        silent: true,
-        skip: {
-          bump: false,
-          changelog: true,
-          commit: false,
-        },
-        verify: false,
-      },
+      expect.any(Object),
       'git',
       ['add'],
     );
     expect(runExecFile).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'returned value from runLifecycleScript',
-        sign: false,
-        silent: true,
-        skip: {
-          bump: false,
-          changelog: true,
-          commit: false,
-        },
-        verify: false,
-      },
+      expect.any(Object),
       'git',
       ['commit', '--no-verify', '-m', 'undefined'],
     );
+  });
+
+  it('exits early if argument "skip.bump" is set to "true".', async () => {
+    jest.spyOn(runLifecycleScriptLib, 'runLifecycleScript').mockImplementationOnce(async () => 'returned value from runLifecycleScript');
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => []);
+    const result = await commit({
+      silent: true,
+      verify: false,
+      sign: false,
+      skip: {
+        bump: true,
+        commit: false,
+        changelog: true,
+      },
+    }, '1.2.3');
+    expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
+    expect(result).not.toBeDefined();
+  });
+
+  it('will run git hooks when argument "n" is set to "false" (by omitting the "--no-verify" flag).', async () => {
+    jest.spyOn(runLifecycleScriptLib, 'runLifecycleScript').mockImplementationOnce(async () => 'returned value from runLifecycleScript');
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => []);
+    const result = await commit({
+      silent: true,
+      verify: true,
+      n: false,
+      sign: false,
+      skip: {
+        bump: true,
+        commit: false,
+        changelog: true,
+      },
+    }, '1.2.3');
+    expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
+    expect(result).not.toBeDefined();
+  });
+
+  it('will add "-S" flag to "git tag" command if argument "skip" is set to "true".', async () => {
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => ['package.json']);
+    const result = await commit({
+      silent: true,
+      sign: true,
+      skip: {
+        commit: false,
+      },
+    }, '1.2.3');
+    expect(result).not.toBeDefined();
   });
 });

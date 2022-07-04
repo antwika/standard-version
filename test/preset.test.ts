@@ -1,6 +1,6 @@
 import shell from 'shelljs';
 import fs from 'fs';
-import cli from '../src/command';
+import command from '../src/command';
 import standardVersion from '../src/index';
 
 describe('preset', () => {
@@ -26,7 +26,7 @@ describe('preset', () => {
   });
 
   it('Conventional Commits (default)', async () => {
-    const parsed = await cli.parse('standard-version --silent');
+    const parsed = await command.getParser().parse('standard-version --silent');
     parsed.skip = { commit: true, tag: true };
     await standardVersion(parsed);
     const content = fs.readFileSync('CHANGELOG.md', 'utf-8');
@@ -36,7 +36,7 @@ describe('preset', () => {
   });
 
   it('Angular', async () => {
-    const parsed = await cli.parse('standard-version --preset angular --silent');
+    const parsed = await command.getParser().parse('standard-version --preset angular --silent');
     parsed.skip = { commit: true, tag: true };
     await standardVersion(parsed);
     const content = fs.readFileSync('CHANGELOG.md', 'utf-8');

@@ -9,7 +9,7 @@ const CONFIGURATION_FILES = [
   '.versionrc.js',
 ];
 
-export const getConfiguration = () => {
+export const getConfiguration = (): any => {
   let config = {};
   const configPath = findUp.sync(CONFIGURATION_FILES);
   if (!configPath) {
