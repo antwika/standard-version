@@ -27,12 +27,20 @@ describe('run-lifecycle-script', () => {
     expect(runExec).toHaveBeenCalledWith({ scripts: { 'hook-name': 'foo -h' }, silent: true }, 'foo -h');
   });
 
-  it('does calls the checkpoint functions to output messages if silent is "false".', async () => {
+  it('does call the checkpoint function to output messages if silent is "false".', async () => {
     jest.spyOn(global.console, 'error').mockImplementation();
     await runLifecycleScript({ silent: false, scripts: { 'hook-name': 'foo -h' } }, 'hook-name');
     expect(console.error).not.toHaveBeenCalled();
     expect(runExec).toHaveBeenCalledWith({ scripts: { 'hook-name': 'foo -h' }, silent: false }, 'foo -h');
     expect(checkpoint).toHaveBeenCalledWith({ silent: false }, 'Running lifecycle script "%s"', ['hook-name']);
     expect(checkpoint).toHaveBeenCalledWith({ silent: false }, '- execute command: "%s"', ['foo -h'], expect.anything());
+  });
+
+  it('does not call the checkpoint function to output messages if silent is "undefined".', async () => {
+    jest.spyOn(global.console, 'error').mockImplementation();
+    await runLifecycleScript({ silent: undefined, scripts: { 'hook-name': 'foo -h' } }, 'hook-name');
+    expect(console.error).not.toHaveBeenCalled();
+    expect(runExec).toHaveBeenCalledWith({ scripts: { 'hook-name': 'foo -h' }, silent: undefined }, 'foo -h');
+    expect(checkpoint).not.toHaveBeenCalled();
   });
 });
