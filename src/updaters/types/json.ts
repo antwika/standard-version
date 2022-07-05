@@ -1,4 +1,3 @@
-import stringifyPackage from 'stringify-package';
 import detectIndent from 'detect-indent';
 import detectNewline from 'detect-newline';
 
@@ -15,7 +14,13 @@ export const writeVersion = (contents: string, version: string): string => {
     json.packages[''].version = version;
   }
 
-  return stringifyPackage(json, indent, newline);
+  const LF = '\n';
+  const CRLF = '\r\n';
+  let pkg = JSON.stringify(json, null, indent) + LF;
+  if (newline === CRLF) {
+    pkg = json.replace(/\n/g, CRLF);
+  }
+  return pkg;
 };
 
 export const isPrivate = (contents: string): boolean => JSON.parse(contents).private;

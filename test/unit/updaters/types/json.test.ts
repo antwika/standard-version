@@ -1,8 +1,5 @@
 import { isPrivate, readVersion, writeVersion } from '../../../../src/updaters/types/json';
 
-const stringifyPackageMock = jest.fn();
-jest.mock('stringify-package', () => (...args: any) => stringifyPackageMock(...args));
-
 describe('json', () => {
   it('extracts the version value from provided content', () => {
     const pkg = {
@@ -12,13 +9,13 @@ describe('json', () => {
   });
 
   it('extracts the private value from provided content', () => {
-    const p = {
+    const pkg = {
       private: true,
     };
-    expect(isPrivate(JSON.stringify(p))).toBeTruthy();
+    expect(isPrivate(JSON.stringify(pkg))).toBeTruthy();
   });
 
-  it('can overwrite the version number in the provided content', () => {
+  it('can update the version number in the provided package', () => {
     const pkg = {
       private: true,
       version: '1.2.3',
@@ -26,20 +23,10 @@ describe('json', () => {
         '': { version: '1.2.3' },
       },
     };
-    stringifyPackageMock.mockImplementationOnce(() => '{}');
-    writeVersion(JSON.stringify(pkg), '2.3.4');
-    expect(stringifyPackageMock).toHaveBeenCalledWith(
-      {
-        packages: {
-          '': {
-            version: '2.3.4',
-          },
-        },
-        private: true,
-        version: '2.3.4',
-      },
-      '',
-      undefined,
-    );
+    const result = writeVersion(JSON.stringify(pkg, null, 2), '1.2.4');
+    const parsed = JSON.parse(result);
+    expect(parsed.private).toBe(true);
+    expect(parsed.version).toBe('1.2.4');
+    expect(parsed.packages[''].version).toBe('1.2.4');
   });
 });
