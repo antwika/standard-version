@@ -9,7 +9,33 @@ import { tag } from './lifecycles/tag';
 import { resolveUpdaterObjectFromArgument } from './updaters';
 import { getDefaults } from './defaults';
 
-export const standardVersion = async (argv: any) => {
+export type Args = {
+  silent: boolean,
+  verify?: boolean,
+  n?: any,
+  sign?: boolean,
+  skip: {
+    tag?: boolean,
+    commit?: boolean,
+    changelog?: boolean,
+    bump?: boolean,
+  },
+  infile?: string,
+  commitAll?: boolean,
+  releaseCommitMessageFormat: string,
+  tagPrefix: string,
+  prerelease?: string,
+  dryRun?: boolean,
+  scripts?: Record<string, string>,
+  m?: string,
+  message?: string,
+  changelogHeader?: string,
+  header?: string,
+  packageFiles: any[],
+  gitTagFallback?: boolean,
+};
+
+export const standardVersion = async (argv: Args) => {
   /**
    * `--message` (`-m`) support will be removed in the next major version.
    */

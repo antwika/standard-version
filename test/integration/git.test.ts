@@ -24,7 +24,7 @@ describe('git', () => {
     fs.writeFileSync('package.json', JSON.stringify(pkg), 'utf-8');
     const opts = await command.getParser().parse('--tag-prefix p-v');
     expect(opts.tagPrefix).toBe('p-v');
-    await standardVersion(opts);
+    await standardVersion(opts as any);
     expect(console.info).toHaveBeenCalledWith('[INFO] Run `git push --follow-tags origin main` to publish');
     expect(shell.exec('git tag -l').stdout).toMatch(/p-v1.3.0/);
   });
@@ -35,7 +35,7 @@ describe('git', () => {
     shell.exec('git commit --allow-empty -m "feat: a new feature"');
     shell.exec('git commit --allow-empty -m "feat!: a breaking change"');
     const opts = await command.getParser().parse('--tag-prefix android/production/v');
-    await standardVersion(opts);
+    await standardVersion(opts as any);
     expect(shell.exec('git tag -l').stdout).toMatch(/android\/production\/v2.0.0/);
   });
 
@@ -44,7 +44,7 @@ describe('git', () => {
     shell.exec('git tag android/production/v1.2.0');
     shell.exec('git commit --allow-empty -m "feat: a new feature"');
     const opts = await command.getParser().parse('--tag-prefix android/production/v');
-    await standardVersion(opts);
+    await standardVersion(opts as any);
     expect(shell.exec('git tag -l').stdout).toMatch(/android\/production\/v1.3.0/);
   });
 
@@ -53,12 +53,12 @@ describe('git', () => {
     shell.exec('git tag android/production/v1.2.0');
     shell.exec('git commit --allow-empty -m "fix: a fixed bug"');
     const opts = await command.getParser().parse('--tag-prefix android/production/v');
-    await standardVersion(opts);
+    await standardVersion(opts as any);
     expect(shell.exec('git tag -l').stdout).toMatch(/android\/production\/v1.2.1/);
   });
 
   it('formats the commit and tag messages appropriately', async () => {
-    await standardVersion({});
+    await standardVersion({} as any);
     expect(shell.exec('git log --oneline -n1').stdout).toMatch(/chore\(release\): 1\.1\.0/);
     expect(shell.exec('git tag -l -n1 v1.1.0').stdout).toMatch(/chore\(release\): 1\.1\.0/);
   });
@@ -68,7 +68,7 @@ describe('git', () => {
     fs.writeFileSync('package.json', JSON.stringify(pkg), 'utf-8');
     const opts = await command.getParser().parse('--first-release');
     expect(opts.firstRelease).toBeTruthy();
-    await standardVersion(opts);
+    await standardVersion(opts as any);
     expect(shell.exec('git tag -l').stdout).toMatch(/1\.0\.1/);
   });
 
@@ -76,7 +76,7 @@ describe('git', () => {
     fs.writeFileSync('STUFF.md', 'stuff', 'utf-8');
     shell.exec('git add STUFF.md');
     const opts = await command.getParser().parse('--commit-all');
-    await standardVersion(opts);
+    await standardVersion(opts as any);
     expect(shell.exec('git status --porcelain').stdout).toBe('');
   });
 });

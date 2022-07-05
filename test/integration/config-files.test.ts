@@ -39,7 +39,7 @@ describe('config-files', () => {
     const opt = await command.getParser().parse('standard-version');
     opt.skip = { commit: true, tag: true };
     expect(opt).toBeDefined();
-    await standardVersion(opt);
+    await standardVersion(opt as any);
 
     const content = fs.readFileSync('CHANGELOG.md', 'utf-8');
     // expect(content).toMatch(issueUrlFormat);
@@ -66,7 +66,7 @@ describe('config-files', () => {
 
       const opt = await command.getParser().parse('standard-version');
       opt.skip = { commit: true, tag: true };
-      await standardVersion(opt);
+      await standardVersion(opt as any);
       const content = fs.readFileSync('CHANGELOG.md', 'utf-8');
       // expect(content).toMatch(issueUrlFormat);
       expect(content).toMatch('### Tests');
@@ -89,7 +89,7 @@ describe('config-files', () => {
 
     const opt = await command.getParser().parse('standard-version');
     opt.skip = { commit: true, tag: true };
-    await standardVersion(opt);
+    await standardVersion(opt as any);
     const content = fs.readFileSync('CHANGELOG.md', 'utf-8');
     // expect(content).toMatch(issueUrlFormat);
     expect(content).toMatch('### Tests');
@@ -111,7 +111,7 @@ describe('config-files', () => {
 
     const opt = await command.getParser().parse('standard-version');
     opt.skip = { commit: true, tag: true };
-    await standardVersion(opt);
+    await standardVersion(opt as any);
     const content = fs.readFileSync('CHANGELOG.md', 'utf-8');
     // expect(content).toMatch(issueUrlFormat);
     expect(content).toMatch('### Tests');

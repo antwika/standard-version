@@ -45,9 +45,13 @@ describe('standard-version', () => {
 
   it('exits early if updater could not be resolved.', async () => {
     const result = await standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: true,
       header: '# Test change log\n',
       message: 'hello',
+      packageFiles: [],
     });
 
     expect(result).not.toBeDefined();
@@ -62,9 +66,13 @@ describe('standard-version', () => {
     });
 
     const result = await standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: true,
       header: '# Test change log\n',
       message: 'hello',
+      packageFiles: [],
     });
 
     expect(result).not.toBeDefined();
@@ -83,6 +91,9 @@ describe('standard-version', () => {
     jest.spyOn(bumpLib, 'bump').mockResolvedValue('1.1.0');
 
     const result = await standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
@@ -113,9 +124,13 @@ describe('standard-version', () => {
     jest.spyOn(global.console, 'warn').mockImplementation();
 
     await standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: false,
       message: 'Message (deprecated usage)',
       changelogHeader: '# Custom changelog header (deprecated usage)',
+      packageFiles: [],
     });
 
     expect(console.warn).toHaveBeenCalledWith('[standard-version]: --message (-m) will be removed in the next major release. Use --releaseCommitMessageFormat.');
@@ -124,9 +139,13 @@ describe('standard-version', () => {
 
   it('throws if the provided "header" matches/conflicts with the "START_OF_LAST_RELEASE_PATTERN" regex pattern.', async () => {
     await expect(() => standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: false,
       message: 'Message (deprecated usage)',
       changelogHeader: '# [1.2.3] My invalid changelog header',
+      packageFiles: [],
     })).rejects.toThrowError('custom changelog header must not match /(^#+ \\[?\\d+\\.\\d+\\.\\d+|<a name=)/m');
   });
 
@@ -143,6 +162,9 @@ describe('standard-version', () => {
     jest.spyOn(bumpLib, 'bump').mockResolvedValue('1.1.0');
 
     await standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 't',
+      skip: {},
       silent: false,
       message: 'Message (deprecated usage)',
       changelogHeader: '# Custom changelog header (deprecated usage)',
@@ -165,6 +187,9 @@ describe('standard-version', () => {
     jest.spyOn(bumpLib, 'bump').mockResolvedValue('1.1.0');
 
     await expect(() => standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: true,
       header: '# Test change log\n',
       packageFiles: [],
@@ -185,6 +210,9 @@ describe('standard-version', () => {
     jest.spyOn(global.console, 'warn').mockImplementation();
 
     await expect(() => standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['not-found-package-file.json'],
@@ -206,6 +234,9 @@ describe('standard-version', () => {
     jest.spyOn(bumpLib, 'bump').mockResolvedValue('1.1.0');
 
     await standardVersion({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
+      skip: {},
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
