@@ -1,23 +1,19 @@
-// TODO: This type is incomplete and just types a subset of its properties.
+type PrintLevel = 'info' | 'warn' | 'error' | 'log' | 'debug';
+
 type PrintErrorArgs = {
   silent?: boolean,
-  [key: string]: any;
 }
 
-// TODO: This type is incomplete and just types a subset of its properties.
-type PrintErrorOpts = {
-  level?: 'info' | 'warn' | 'error' | 'log' | 'debug',
-  color?: string,
-  [key: string]: any;
-}
+const printError = (args: PrintErrorArgs, msg: string, level: PrintLevel) => {
+  if (args.silent) return;
 
-const printError = (args: PrintErrorArgs, msg: string, opts?: PrintErrorOpts) => {
-  if (!args.silent) {
-    const combined = { level: 'error', color: 'red', ...opts };
-
-    const logger = console as any;
-
-    logger[combined.level](msg);
+  switch (level) {
+    case 'info': console.info(msg); break;
+    case 'warn': console.warn(msg); break;
+    case 'error': console.error(msg); break;
+    case 'log': console.log(msg); break;
+    case 'debug': console.debug(msg); break;
+    default: throw new Error('A log known level must be specified.');
   }
 };
 

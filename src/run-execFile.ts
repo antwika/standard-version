@@ -2,15 +2,12 @@ import { promisify } from 'util';
 import { execFile } from 'child_process';
 import printError from './print-error';
 
-// TODO: This type is incomplete and just types a subset of its properties.
 type RunExecFileArgs = {
   silent?: boolean,
   dryRun?: boolean,
-  [key: string]: any;
 };
 
-// TODO: This type is incomplete and just types a subset of its properties.
-type RunExecFileCmdArgs = string[] | null | undefined;
+type RunExecFileCmdArgs = string[];
 
 export const runExecFile = async (
   args: RunExecFileArgs,
@@ -22,11 +19,11 @@ export const runExecFile = async (
   try {
     const { stderr, stdout } = await execFilePromise(cmd, cmdArgs);
     // If execFile returns content in stderr, but no error, print it as a warning
-    if (stderr) printError(args, stderr, { level: 'warn', color: 'yellow' });
+    if (stderr) printError(args, stderr, 'warn');
     return stdout;
   } catch (error: any) {
     // If execFile returns an error, print it and exit with return code 1
-    printError(args, error.stderr || error.message);
+    printError(args, error.stderr || error.message, 'error');
     throw error;
   }
 };

@@ -13,34 +13,30 @@ describe('run-lifecycle-script', () => {
   it('does not execute anything if there is no "scripts" provided in the arguments.', async () => {
     const result = await runLifecycleScript({ silent: true }, 'hook-name');
     expect(result).not.toBeDefined();
+    expect(runExec).toHaveBeenCalledTimes(0);
   });
 
   it('does not execute anything if "scripts" provided but the specific hook does not exist.', async () => {
     const result = await runLifecycleScript({ silent: true, scripts: {} }, 'hook-name');
     expect(result).not.toBeDefined();
+    expect(runExec).toHaveBeenCalledTimes(0);
   });
 
-  it('does not print anything if specific hook exists but the argument "silent" is set to "true".', async () => {
-    jest.spyOn(global.console, 'error').mockImplementation();
+  it('passes "silent" argument forward to the "checkpoint" function call.', async () => {
     await runLifecycleScript({ silent: true, scripts: { 'hook-name': 'foo -h' } }, 'hook-name');
-    expect(console.error).not.toHaveBeenCalled();
-    expect(runExec).toHaveBeenCalledWith({ scripts: { 'hook-name': 'foo -h' }, silent: true }, 'foo -h');
-  });
-
-  it('does call the checkpoint function to output messages if silent is "false".', async () => {
-    jest.spyOn(global.console, 'error').mockImplementation();
+    expect(checkpoint).toHaveBeenCalledWith(
+      { silent: true },
+      expect.anything(),
+      expect.anything(),
+    );
+    expect(runExec).toHaveBeenCalledWith({ silent: true, scripts: { 'hook-name': 'foo -h' } }, 'foo -h');
     await runLifecycleScript({ silent: false, scripts: { 'hook-name': 'foo -h' } }, 'hook-name');
-    expect(console.error).not.toHaveBeenCalled();
-    expect(runExec).toHaveBeenCalledWith({ scripts: { 'hook-name': 'foo -h' }, silent: false }, 'foo -h');
-    expect(checkpoint).toHaveBeenCalledWith({ silent: false }, 'Running lifecycle script "%s"', ['hook-name']);
-    expect(checkpoint).toHaveBeenCalledWith({ silent: false }, '- execute command: "%s"', ['foo -h'], expect.anything());
-  });
-
-  it('does not call the checkpoint function to output messages if silent is "undefined".', async () => {
-    jest.spyOn(global.console, 'error').mockImplementation();
-    await runLifecycleScript({ silent: undefined, scripts: { 'hook-name': 'foo -h' } }, 'hook-name');
-    expect(console.error).not.toHaveBeenCalled();
-    expect(runExec).toHaveBeenCalledWith({ scripts: { 'hook-name': 'foo -h' }, silent: undefined }, 'foo -h');
-    expect(checkpoint).not.toHaveBeenCalled();
+    expect(checkpoint).toHaveBeenCalledWith(
+      { silent: false },
+      expect.anything(),
+      expect.anything(),
+    );
+    expect(runExec).toHaveBeenCalledWith({ silent: false, scripts: { 'hook-name': 'foo -h' } }, 'foo -h');
+    expect(runExec).toHaveBeenCalledTimes(2);
   });
 });

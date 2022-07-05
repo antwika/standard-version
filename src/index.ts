@@ -81,7 +81,7 @@ const standardVersion = async (argv: any) => {
     await commit(args, newVersion);
     await tag(newVersion, pkg ? pkg.private : false, args);
   } catch (err: any) {
-    printError(args, err.message);
+    printError(args, err.message, 'error');
     throw err;
   }
 };
