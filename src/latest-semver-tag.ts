@@ -2,19 +2,13 @@ import gitSemverTags from 'git-semver-tags';
 import semver from 'semver';
 import util from 'util';
 
-const latestSemverTag = async (tagPrefix?: string) => {
+export const latestSemverTag = async (tagPrefix?: string) => {
   const gitSemverTagsPromise = util.promisify(gitSemverTags);
   const tags: string[] = await gitSemverTagsPromise({ tagPrefix });
-  if (tags.length === 0) {
-    return '1.0.0';
-  }
+  const sortedTags = tags.map((tag) => tag.replace(new RegExp(`^${tagPrefix}`), ''))
+    .map((tag) => semver.clean(tag))
+    .filter((x): x is string => x !== null)
+    .sort(semver.rcompare);
 
-  // Respect tagPrefix
-  let temp = tags.map((tag) => tag.replace(new RegExp(`^${tagPrefix}`), ''));
-  // ensure that the largest semver tag is at the head.
-  temp = temp.map((tag) => semver.clean(tag));
-  temp.sort(semver.rcompare);
-  return temp[0];
+  return sortedTags.length === 0 ? '1.0.0' : sortedTags[0];
 };
-
-export default latestSemverTag;

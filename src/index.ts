@@ -3,7 +3,7 @@ import path from 'path';
 import { bump } from './lifecycles/bump';
 import { changelog, START_OF_LAST_RELEASE_PATTERN } from './lifecycles/changelog';
 import commit from './lifecycles/commit';
-import latestSemverTag from './latest-semver-tag';
+import { latestSemverTag } from './latest-semver-tag';
 import printError from './print-error';
 import tag from './lifecycles/tag';
 import { resolveUpdaterObjectFromArgument } from './updaters';

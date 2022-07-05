@@ -1,5 +1,5 @@
 import util from 'util';
-import latestSemverTag from '../../src/latest-semver-tag';
+import { latestSemverTag } from '../../src/latest-semver-tag';
 
 // eslint-disable-next-line no-var
 var cleanMock = jest.fn();

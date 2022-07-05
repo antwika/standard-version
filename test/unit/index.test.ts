@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import bumpLib, { bump } from '../../src/lifecycles/bump';
 import { changelog } from '../../src/lifecycles/changelog';
-import latestSemverTag from '../../src/latest-semver-tag';
+import { latestSemverTag } from '../../src/latest-semver-tag';
 import tag from '../../src/lifecycles/tag';
 import * as updaters from '../../src/updaters';
 import standardVersion from '../../src/index';
