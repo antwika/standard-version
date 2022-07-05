@@ -33,6 +33,7 @@ export type Args = {
   header?: string,
   packageFiles: any[],
   gitTagFallback?: boolean,
+  preset: Record<any, any>,
 };
 
 export const standardVersion = async (argv: Args) => {

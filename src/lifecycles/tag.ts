@@ -3,19 +3,9 @@ import checkpoint from '../checkpoint';
 import formatCommitMessage from '../format-commit-message';
 import { runExecFile } from '../run-execFile';
 import { runLifecycleScript } from '../run-lifecycle-script';
+import { Args } from '../standard-version';
 
-type ExecTagArgs = {
-  silent: boolean,
-  tagPrefix: string,
-  releaseCommitMessageFormat: string,
-  skip: {
-    tag?: boolean,
-  }
-  sign: boolean,
-  prerelease?: string,
-};
-
-const execTag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) => {
+const execTag = async (newVersion: string, pkgPrivate: boolean, args: Args) => {
   let tagOption;
   if (args.sign) {
     tagOption = '-s';
@@ -24,7 +14,7 @@ const execTag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArg
   }
   checkpoint(args, 'tagging release %s%s', [args.tagPrefix, newVersion]);
   await runExecFile(args, 'git', ['tag', tagOption, args.tagPrefix + newVersion, '-m', `${formatCommitMessage(args.releaseCommitMessageFormat, newVersion)}`]);
-  const currentBranch = await runExecFile({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+  const currentBranch = await runExecFile(args, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
   if (currentBranch === undefined) {
     throw new Error('The current branch is "undefined" and the execTag function could not properly continue...');
   }
@@ -43,7 +33,7 @@ const execTag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArg
   checkpoint(args, 'Run `%s` to publish', [message], '[INFO]');
 };
 
-export const tag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) => {
+export const tag = async (newVersion: string, pkgPrivate: boolean, args: Args) => {
   if (args.skip.tag) return;
   await runLifecycleScript(args, 'pretag');
   await execTag(newVersion, pkgPrivate, args);

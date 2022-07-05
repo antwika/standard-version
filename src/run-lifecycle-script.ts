@@ -1,12 +1,8 @@
 import checkpoint from './checkpoint';
 import runExec from './run-exec';
+import { Args } from './standard-version';
 
-type RunLifecycleScriptArgs = {
-  scripts?: Record<string, string>,
-  silent: boolean,
-};
-
-export const runLifecycleScript = async (args: RunLifecycleScriptArgs, hookName: string) => {
+export const runLifecycleScript = async (args: Args, hookName: string) => {
   const { scripts, silent } = args;
   if (!scripts || !scripts[hookName]) return undefined;
   const command = scripts[hookName];
