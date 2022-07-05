@@ -1,6 +1,6 @@
 import semver from 'semver';
 import runLifecycleScriptLib from '../../../src/run-lifecycle-script';
-import { bump, getCurrentActiveType } from '../../../src/lifecycles/bump';
+import { bump, getCurrentActiveType, getTypePriority } from '../../../src/lifecycles/bump';
 import * as updaters from '../../../src/updaters';
 
 jest.mock('../../../src/run-lifecycle-script');
@@ -131,12 +131,49 @@ describe('bump', () => {
     }, '1.2.0-alpha.1');
   });
 
-  it('returns "patch" as default if no the specified type could not be found in the list of known types.', () => {
-    jest.spyOn(semver, 'major').mockReturnValueOnce(null);
-    jest.spyOn(semver, 'minor').mockReturnValueOnce(null);
-    jest.spyOn(semver, 'patch').mockReturnValueOnce(null);
-    const result = getCurrentActiveType('0.0.0');
-    expect(result).toBe('patch');
+  describe('getCurrentActiveType', () => {
+    it('returns "patch" if the semver.patch("0.0.1") returns a number greater than zero.', () => {
+      jest.spyOn(semver, 'patch').mockReturnValueOnce(1);
+      const result = getCurrentActiveType('0.0.1');
+      expect(result).toBe('patch');
+    });
+
+    it('returns "minor" if the semver.patch("0.0.1") returns a number greater than zero.', () => {
+      jest.spyOn(semver, 'patch').mockReturnValueOnce(0);
+      jest.spyOn(semver, 'minor').mockReturnValueOnce(1);
+      const result = getCurrentActiveType('0.1.0');
+      expect(result).toBe('minor');
+    });
+
+    it('returns "major" if the semver.patch("0.0.1") returns a number greater than zero.', () => {
+      jest.spyOn(semver, 'patch').mockReturnValueOnce(0);
+      jest.spyOn(semver, 'minor').mockReturnValueOnce(0);
+      jest.spyOn(semver, 'major').mockReturnValueOnce(1);
+      const result = getCurrentActiveType('1.0.0');
+      expect(result).toBe('major');
+    });
+
+    it('returns "patch" as default if no the specified type could not be found in the list of known types.', () => {
+      jest.spyOn(semver, 'patch').mockReturnValueOnce(0);
+      jest.spyOn(semver, 'minor').mockReturnValueOnce(0);
+      jest.spyOn(semver, 'major').mockReturnValueOnce(0);
+      const result = getCurrentActiveType('0.0.0');
+      expect(result).toBe('patch');
+    });
+  });
+
+  describe('getTypePriority', () => {
+    it('returns "0" for argument "patch".', () => {
+      expect(getTypePriority('patch')).toBe(0);
+    });
+
+    it('returns "1" for argument "minor".', () => {
+      expect(getTypePriority('minor')).toBe(1);
+    });
+
+    it('returns "2" for argument "major".', () => {
+      expect(getTypePriority('major')).toBe(2);
+    });
   });
 
   // eslint-disable-next-line jest/expect-expect

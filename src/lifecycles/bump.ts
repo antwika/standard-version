@@ -11,7 +11,13 @@ import { resolveUpdaterObjectFromArgument } from '../updaters';
 
 let configsToUpdate: any = {};
 
-const TypeList = ['major', 'minor', 'patch'].reverse();
+type SemverTypeName = 'patch' | 'minor' | 'major';
+
+const semverTypePriorityMap: Record<SemverTypeName, number> = ({
+  patch: 0,
+  minor: 1,
+  major: 2,
+});
 
 /**
  * extract the in-pre-release type in target version
@@ -19,14 +25,12 @@ const TypeList = ['major', 'minor', 'patch'].reverse();
  * @param version
  * @return {string}
  */
-export const getCurrentActiveType = (version: any) => {
-  for (const type of TypeList) {
-    if (semver[type](version)) return type;
-  }
-
+export const getCurrentActiveType = (version: any): SemverTypeName => {
+  if (semver.patch(version)) return 'patch';
+  if (semver.minor(version)) return 'minor';
+  if (semver.major(version)) return 'major';
   // Unclear to me what should be the default value? Or should an error be thrown instead?
-  console.warn(`A call to "getCurrentActiveType" ended up with no active types found and as fallback returned "${TypeList[0]}" ...`);
-  return TypeList[0];
+  return 'patch';
 };
 
 const isString = (val: any) => typeof val === 'string';
@@ -54,9 +58,7 @@ const isInPrerelease = (version: any) => Array.isArray(semver.prerelease(version
  * @param type
  * @return {number}
  */
-function getTypePriority(type: any) {
-  return TypeList.indexOf(type);
-}
+export const getTypePriority = (type: SemverTypeName) => semverTypePriorityMap[type];
 
 function getReleaseType(prerelease: any, expectedReleaseType: any, currentVersion: any) {
   if (!isString(prerelease)) return expectedReleaseType;
