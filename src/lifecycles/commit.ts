@@ -5,7 +5,6 @@ import formatCommitMessage from '../format-commit-message';
 import { runExecFile } from '../run-execFile';
 import { runLifecycleScript } from '../run-lifecycle-script';
 
-// TODO: This type is incomplete and just types a subset of its properties.
 type CommitArgs = {
   silent: boolean,
   verify?: boolean,
@@ -15,8 +14,10 @@ type CommitArgs = {
     commit?: boolean,
     changelog?: boolean,
     bump?: boolean,
-  }
-  [key: string]: any;
+  },
+  infile?: string,
+  commitAll?: boolean,
+  releaseCommitMessageFormat: string,
 };
 
 async function execCommit(args: CommitArgs, newVersion: string) {
@@ -24,10 +25,10 @@ async function execCommit(args: CommitArgs, newVersion: string) {
   let paths: any = [];
   const verify = args.verify === false || args.n ? ['--no-verify'] : [];
   const sign = args.sign ? ['-S'] : [];
-  const toAdd = [];
+  const toAdd: string[] = [];
 
   // only start with a pre-populated paths list when CHANGELOG processing is not skipped
-  if (!args.skip.changelog) {
+  if (args.infile && !args.skip.changelog) {
     paths = [args.infile];
     toAdd.push(args.infile);
   }

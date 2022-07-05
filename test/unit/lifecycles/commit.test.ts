@@ -18,6 +18,7 @@ describe('commit', () => {
       skip: {
         commit: true,
       },
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
     }, '1.2.3');
     expect(result).not.toBeDefined();
   });
@@ -34,6 +35,7 @@ describe('commit', () => {
         commit: false,
         changelog: true,
       },
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
     }, '1.2.3');
     expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
     expect(result).not.toBeDefined();
@@ -61,6 +63,7 @@ describe('commit', () => {
         commit: false,
         changelog: true,
       },
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
     }, '1.2.3');
     expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
     expect(result).not.toBeDefined();
@@ -79,6 +82,7 @@ describe('commit', () => {
         commit: false,
         changelog: true,
       },
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
     }, '1.2.3');
     expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
     expect(result).not.toBeDefined();
@@ -92,6 +96,7 @@ describe('commit', () => {
       skip: {
         commit: false,
       },
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
     }, '1.2.3');
     expect(result).not.toBeDefined();
   });
