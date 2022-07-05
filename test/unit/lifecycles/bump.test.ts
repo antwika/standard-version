@@ -110,28 +110,6 @@ describe('bump', () => {
   });
 
   // eslint-disable-next-line jest/expect-expect
-  it('continues the prerelease sequence.', async () => {
-    jest.spyOn(semver, 'inc').mockReturnValueOnce('1.2.0-alpha.2');
-    jest.spyOn(semver, 'prerelease').mockReturnValueOnce(['alpha', '1']);
-    jest.spyOn(semver, 'major').mockReturnValueOnce(1);
-    jest.spyOn(semver, 'minor').mockReturnValueOnce(2);
-    jest.spyOn(semver, 'patch').mockReturnValueOnce(0);
-    jest.spyOn(updaters, 'resolveUpdaterObjectFromArgument').mockReturnValueOnce({
-      readVersion: (contents: string) => contents,
-      writeVersion: (_: string, version: string) => version,
-    });
-    await bump({
-      prerelease: '',
-      releaseAs: 'minor',
-      firstRelease: false,
-      bumpFiles: ['file.txt'],
-      skip: {
-        bump: false,
-      },
-    }, '1.2.0-alpha.1');
-  });
-
-  // eslint-disable-next-line jest/expect-expect
   it('does not continue the prerelease sequence if expected release type(major|minor|patch) is greater than the current prerelease version type.', async () => {
     jest.spyOn(semver, 'inc').mockReturnValueOnce('1.2.0-alpha.2');
     jest.spyOn(semver, 'prerelease').mockReturnValueOnce(['alpha', '1']);
@@ -153,8 +131,33 @@ describe('bump', () => {
     }, '1.2.0-alpha.1');
   });
 
-  it('returns "major" as default if no the specified type could not be found in the list of known types.', () => {
-    const result = getCurrentActiveType('unknown');
-    expect(result).toBe('major');
+  it('returns "patch" as default if no the specified type could not be found in the list of known types.', () => {
+    jest.spyOn(semver, 'major').mockReturnValueOnce(null);
+    jest.spyOn(semver, 'minor').mockReturnValueOnce(null);
+    jest.spyOn(semver, 'patch').mockReturnValueOnce(null);
+    const result = getCurrentActiveType('0.0.0');
+    expect(result).toBe('patch');
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  it('continues the prerelease sequence.', async () => {
+    jest.spyOn(semver, 'inc').mockReturnValueOnce('1.2.0-alpha.2');
+    jest.spyOn(semver, 'prerelease').mockReturnValueOnce(['alpha', '1']);
+    jest.spyOn(semver, 'patch').mockReturnValueOnce(0);
+    jest.spyOn(semver, 'minor').mockReturnValueOnce(2);
+    jest.spyOn(semver, 'major').mockReturnValueOnce(1);
+    jest.spyOn(updaters, 'resolveUpdaterObjectFromArgument').mockReturnValueOnce({
+      readVersion: (contents: string) => contents,
+      writeVersion: (_: string, version: string) => version,
+    });
+    await bump({
+      prerelease: '',
+      releaseAs: 'minor',
+      firstRelease: false,
+      bumpFiles: ['file.txt'],
+      skip: {
+        bump: false,
+      },
+    }, '1.2.0-alpha.1');
   });
 });
