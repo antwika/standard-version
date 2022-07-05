@@ -1,6 +1,6 @@
 import semver from 'semver';
 import runLifecycleScriptLib from '../../../src/run-lifecycle-script';
-import { bump } from '../../../src/lifecycles/bump';
+import { bump, getCurrentActiveType } from '../../../src/lifecycles/bump';
 import * as updaters from '../../../src/updaters';
 
 jest.mock('../../../src/run-lifecycle-script');
@@ -151,5 +151,10 @@ describe('bump', () => {
         bump: false,
       },
     }, '1.2.0-alpha.1');
+  });
+
+  it('returns "major" as default if no the specified type could not be found in the list of known types.', () => {
+    const result = getCurrentActiveType('unknown');
+    expect(result).toBe('major');
   });
 });

@@ -19,7 +19,7 @@ const TypeList = ['major', 'minor', 'patch'].reverse();
  * @param version
  * @return {string}
  */
-function getCurrentActiveType(version: any) {
+export const getCurrentActiveType = (version: any) => {
   for (const type of TypeList) {
     if (semver[type](version)) return type;
   }
@@ -27,11 +27,9 @@ function getCurrentActiveType(version: any) {
   // Unclear to me what should be the default value? Or should an error be thrown instead?
   console.warn(`A call to "getCurrentActiveType" ended up with no active types found and as fallback returned "${TypeList[0]}" ...`);
   return TypeList[0];
-}
+};
 
-function isString(val: any) {
-  return typeof val === 'string';
-}
+const isString = (val: any) => typeof val === 'string';
 
 /**
  * if a version is currently in pre-release state,
@@ -42,13 +40,12 @@ function isString(val: any) {
  * @param expectType
  * @return {boolean}
  */
-function shouldContinuePrerelease(version: any, expectType: any) {
-  return getCurrentActiveType(version) === expectType;
-}
+const shouldContinuePrerelease = (
+  version: any,
+  expectType: any,
+) => getCurrentActiveType(version) === expectType;
 
-function isInPrerelease(version: any) {
-  return Array.isArray(semver.prerelease(version));
-}
+const isInPrerelease = (version: any) => Array.isArray(semver.prerelease(version));
 
 /**
  * calculate the priority of release type,
