@@ -4,7 +4,6 @@ import formatCommitMessage from '../format-commit-message';
 import { runExecFile } from '../run-execFile';
 import { runLifecycleScript } from '../run-lifecycle-script';
 
-// TODO: This type is incomplete and just types a subset of its properties.
 type ExecTagArgs = {
   silent: boolean,
   tagPrefix: string,
@@ -12,10 +11,11 @@ type ExecTagArgs = {
   skip: {
     tag?: boolean,
   }
-  [key: string]: any;
+  sign: boolean,
+  prerelease?: string,
 };
 
-async function execTag(newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) {
+const execTag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) => {
   let tagOption;
   if (args.sign) {
     tagOption = '-s';
@@ -41,13 +41,11 @@ async function execTag(newVersion: string, pkgPrivate: boolean, args: ExecTagArg
   }
 
   checkpoint(args, 'Run `%s` to publish', [message], '[INFO]');
-}
+};
 
-const Tag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) => {
+export const tag = async (newVersion: string, pkgPrivate: boolean, args: ExecTagArgs) => {
   if (args.skip.tag) return;
   await runLifecycleScript(args, 'pretag');
   await execTag(newVersion, pkgPrivate, args);
   await runLifecycleScript(args, 'posttag');
 };
-
-export default Tag;

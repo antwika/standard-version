@@ -1,4 +1,4 @@
-import tag from '../../../src/lifecycles/tag';
+import { tag } from '../../../src/lifecycles/tag';
 import { runLifecycleScript } from '../../../src/run-lifecycle-script';
 import runExecFileLib from '../../../src/run-execFile';
 import checkpoint from '../../../src/checkpoint';
@@ -22,6 +22,7 @@ describe('tag', () => {
       skip: {
         tag: true,
       },
+      sign: false,
     });
     expect(result).not.toBeDefined();
   });
@@ -34,10 +35,12 @@ describe('tag', () => {
       skip: {
         tag: false,
       },
+      sign: false,
     })).rejects.toThrowError('The current branch is "undefined" and the execTag function could not properly continue...');
     expect(runLifecycleScript).toHaveBeenCalledWith(
       {
         releaseCommitMessageFormat: 'Format message {{currentTag}}',
+        sign: false,
         silent: true,
         skip: { tag: false },
         tagPrefix: 'v',
@@ -47,6 +50,7 @@ describe('tag', () => {
     expect(checkpoint).toHaveBeenCalledWith(
       {
         releaseCommitMessageFormat: 'Format message {{currentTag}}',
+        sign: false,
         silent: true,
         skip: { tag: false },
         tagPrefix: 'v',
@@ -60,6 +64,7 @@ describe('tag', () => {
     expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(
       {
         releaseCommitMessageFormat: 'Format message {{currentTag}}',
+        sign: false,
         silent: true,
         skip: { tag: false },
         tagPrefix: 'v',
@@ -79,10 +84,12 @@ describe('tag', () => {
       skip: {
         tag: false,
       },
+      sign: false,
     })).rejects.toThrowError('The current branch is "undefined" and the execTag function could not properly continue...');
     expect(runLifecycleScript).toHaveBeenCalledWith(
       {
         releaseCommitMessageFormat: 'Format message {{currentTag}}',
+        sign: false,
         silent: true,
         skip: { tag: false },
         tagPrefix: 'v',
@@ -92,6 +99,7 @@ describe('tag', () => {
     expect(checkpoint).toHaveBeenCalledWith(
       {
         releaseCommitMessageFormat: 'Format message {{currentTag}}',
+        sign: false,
         silent: true,
         skip: { tag: false },
         tagPrefix: 'v',
@@ -105,6 +113,7 @@ describe('tag', () => {
     expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(
       {
         releaseCommitMessageFormat: 'Format message {{currentTag}}',
+        sign: false,
         silent: true,
         skip: { tag: false },
         tagPrefix: 'v',
