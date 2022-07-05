@@ -14,8 +14,7 @@ const latestSemverTag = async (tagPrefix?: string) => {
   // ensure that the largest semver tag is at the head.
   temp = temp.map((tag) => semver.clean(tag));
   temp.sort(semver.rcompare);
-  const latestTag = temp[0];
-  return latestTag;
+  return temp[0];
 };
 
 export default latestSemverTag;
