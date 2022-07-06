@@ -39,6 +39,26 @@ export type Args = {
   bumpFiles: string[],
 };
 
+const getPackage = async (args: Args) => {
+  let pkg;
+  for (const packageFile of args.packageFiles) {
+    const updater = resolveUpdaterObjectFromArgument(packageFile);
+    if (!updater || !updater.filename) break;
+    const pkgPath = path.resolve(process.cwd(), updater.filename);
+    try {
+      const contents = fs.readFileSync(pkgPath, 'utf8');
+      pkg = {
+        version: updater.readVersion(contents),
+        private: typeof updater.isPrivate === 'function' ? updater.isPrivate(contents) : false,
+      };
+      break;
+    } catch (err) {
+      console.warn(`Error thrown while trying to read package path ${pkgPath} ... Is this expected?`);
+    }
+  }
+  return pkg;
+};
+
 export const standardVersion = async (argv: Args) => {
   /**
    * `--message` (`-m`) support will be removed in the next major version.
@@ -70,42 +90,19 @@ export const standardVersion = async (argv: Args) => {
   }
 
   const defaults = getDefaults();
-  /**
-   * If an argument for `packageFiles` provided, we include it as a "default" `bumpFile`.
-   */
   if (argv.packageFiles) {
-    defaults.bumpFiles = defaults.bumpFiles.concat(argv.packageFiles);
+    defaults.bumpFiles = { ...defaults.bumpFiles, ...argv.packageFiles };
   }
 
   const args = { ...defaults, ...argv };
-  let pkg;
-  for (const packageFile of args.packageFiles) {
-    const updater = resolveUpdaterObjectFromArgument(packageFile);
-    if (!updater) return;
-    if (!updater.filename) return;
-    const pkgPath = path.resolve(process.cwd(), updater.filename);
-    try {
-      const contents = fs.readFileSync(pkgPath, 'utf8');
-      pkg = {
-        version: updater.readVersion(contents),
-        private: typeof updater.isPrivate === 'function' ? updater.isPrivate(contents) : false,
-      };
-      break;
-    } catch (err) {
-      console.warn(`Error thrown while trying to read package path ${pkgPath} ... Is this expected?`);
-    }
-  }
+  const pkg = await getPackage(args);
 
   try {
-    let version;
-    if (pkg) {
-      version = pkg.version;
-    } else if (args.gitTagFallback) {
-      version = await latestSemverTag(args.tagPrefix);
-    } else {
+    if (!pkg && !args.gitTagFallback) {
       throw new Error('no package file found');
     }
 
+    const version = pkg ? pkg.version : await latestSemverTag(args.tagPrefix);
     const newVersion = await bump(args, version);
     await changelog(args, newVersion);
     await commit(args, newVersion);
