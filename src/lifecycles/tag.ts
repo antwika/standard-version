@@ -6,27 +6,26 @@ import { runLifecycleScript } from '../run-lifecycle-script';
 import { Args } from '../standard-version';
 
 const execTag = async (newVersion: string, pkgPrivate: boolean, args: Args) => {
-  let tagOption;
-  if (args.sign) {
-    tagOption = '-s';
-  } else {
-    tagOption = '-a';
-  }
-  checkpoint(args, 'tagging release %s%s', [args.tagPrefix, newVersion]);
-  await runExecFile(args, 'git', ['tag', tagOption, args.tagPrefix + newVersion, '-m', `${formatCommitMessage(args.releaseCommitMessageFormat, newVersion)}`]);
+  const {
+    sign,
+    tagPrefix,
+    releaseCommitMessageFormat,
+    prerelease,
+  } = args;
+  const tagOption = sign ? '-s' : '-a';
+  checkpoint(args, 'tagging release %s%s', [tagPrefix, newVersion]);
+  await runExecFile(args, 'git', ['tag', tagOption, tagPrefix + newVersion, '-m', `${formatCommitMessage(releaseCommitMessageFormat, newVersion)}`]);
   const currentBranch = await runExecFile(args, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
-  if (currentBranch === undefined) {
+  if (!currentBranch) {
     throw new Error('The current branch is "undefined" and the execTag function could not properly continue...');
   }
+
   let message = `git push --follow-tags origin ${currentBranch.trim()}`;
   if (pkgPrivate !== true && bump.getUpdatedConfigs()['package.json']) {
     message += ' && npm publish';
-    if (args.prerelease !== undefined) {
-      if (args.prerelease === '') {
-        message += ' --tag prerelease';
-      } else {
-        message += ` --tag ${args.prerelease}`;
-      }
+    if (prerelease !== undefined) {
+      message += ' --tag ';
+      message += prerelease === '' ? 'prerelease' : prerelease;
     }
   }
 

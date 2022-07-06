@@ -1,10 +1,7 @@
 import fs from 'fs';
+import { Args } from './standard-version';
 
-type WriteFileArgs = {
-  dryRun?: boolean,
-};
-
-const writeFile = (args: WriteFileArgs, filePath: string, content: string) => {
+const writeFile = (args: Args, filePath: string, content: string) => {
   if (args.dryRun) return;
   fs.writeFileSync(filePath, content, 'utf8');
 };

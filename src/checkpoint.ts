@@ -7,7 +7,6 @@ type CheckpointArgv = {
 type CheckpointArgs = string[];
 
 const checkpoint = (argv: CheckpointArgv, msg: string, args: CheckpointArgs, figure?: string) => {
-  console.log('checkpoint silent:', argv.silent);
   const defaultFigure = '[OK]';
   if (!argv.silent) {
     const input = [msg].concat(args.map((arg) => arg));
