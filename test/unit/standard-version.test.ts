@@ -52,6 +52,8 @@ describe('standard-version', () => {
       header: '# Test change log\n',
       message: 'hello',
       packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     });
 
     expect(result).not.toBeDefined();
@@ -73,6 +75,8 @@ describe('standard-version', () => {
       header: '# Test change log\n',
       message: 'hello',
       packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     });
 
     expect(result).not.toBeDefined();
@@ -97,6 +101,8 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
     });
 
     expect(result).not.toBeDefined();
@@ -131,6 +137,8 @@ describe('standard-version', () => {
       message: 'Message (deprecated usage)',
       changelogHeader: '# Custom changelog header (deprecated usage)',
       packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     });
 
     expect(console.warn).toHaveBeenCalledWith('[standard-version]: --message (-m) will be removed in the next major release. Use --releaseCommitMessageFormat.');
@@ -146,6 +154,8 @@ describe('standard-version', () => {
       message: 'Message (deprecated usage)',
       changelogHeader: '# [1.2.3] My invalid changelog header',
       packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     })).rejects.toThrowError('custom changelog header must not match /(^#+ \\[?\\d+\\.\\d+\\.\\d+|<a name=)/m');
   });
 
@@ -169,6 +179,8 @@ describe('standard-version', () => {
       message: 'Message (deprecated usage)',
       changelogHeader: '# Custom changelog header (deprecated usage)',
       packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     });
 
     expect(latestSemverTag).toHaveBeenCalledWith('t');
@@ -193,7 +205,9 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: [],
+      bumpFiles: [],
       gitTagFallback: false,
+      preset: {},
     })).rejects.toThrowError('no package file found');
   });
 
@@ -216,7 +230,9 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['not-found-package-file.json'],
+      bumpFiles: [],
       gitTagFallback: false,
+      preset: {},
     })).rejects.toThrowError('no package file found');
 
     expect(console.warn).toHaveBeenCalledWith('Error thrown while trying to read package path path-to-test-updater ... Is this expected?');
@@ -240,6 +256,8 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
     });
 
     expect(tag).toHaveBeenCalledWith(expect.anything(), false, expect.anything());

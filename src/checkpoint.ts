@@ -10,7 +10,7 @@ const checkpoint = (argv: CheckpointArgv, msg: string, args: CheckpointArgs, fig
   console.log('checkpoint silent:', argv.silent);
   const defaultFigure = '[OK]';
   if (!argv.silent) {
-    const input = [msg].concat(args.map((arg: any) => arg));
+    const input = [msg].concat(args.map((arg) => arg));
     const temp = util.format(...input);
     console.info(`${(figure || defaultFigure)} ${temp}`);
   }

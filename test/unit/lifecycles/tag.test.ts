@@ -16,9 +16,15 @@ describe('tag', () => {
 
   it('does not do any tagging, if argument "skip.tag" is set to "true".', async () => {
     const result = await tag('1.2.3', false, {
-      silent: true,
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
       tagPrefix: 'v',
-      releaseCommitMessageFormat: 'Format message {{currentTag}}',
+      silent: true,
+      header: '# Test change log\n',
+      packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
+      dryRun: true,
+      scripts: { 'hook-name': 'foo -h' },
       skip: {
         tag: true,
       },
@@ -29,99 +35,54 @@ describe('tag', () => {
 
   it('throws an error if "currentBranch" is considered to be "undefined".', async () => {
     await expect(() => tag('1.2.3', false, {
-      silent: true,
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
       tagPrefix: 'v',
-      releaseCommitMessageFormat: 'Format message {{currentTag}}',
+      silent: true,
+      header: '# Test change log\n',
+      packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
+      dryRun: true,
+      scripts: { 'hook-name': 'foo -h' },
       skip: {
         tag: false,
       },
       sign: false,
     })).rejects.toThrowError('The current branch is "undefined" and the execTag function could not properly continue...');
-    expect(runLifecycleScript).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'Format message {{currentTag}}',
-        sign: false,
-        silent: true,
-        skip: { tag: false },
-        tagPrefix: 'v',
-      },
-      'pretag',
-    );
+    expect(runLifecycleScript).toHaveBeenCalledWith(expect.anything(), 'pretag');
     expect(checkpoint).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'Format message {{currentTag}}',
-        sign: false,
-        silent: true,
-        skip: { tag: false },
-        tagPrefix: 'v',
-      },
+      expect.anything(),
       'tagging release %s%s',
       [
         'v',
         '1.2.3',
       ],
     );
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'Format message {{currentTag}}',
-        sign: false,
-        silent: true,
-        skip: { tag: false },
-        tagPrefix: 'v',
-      },
-      'git',
-      ['tag', '-a', 'v1.2.3', '-m', 'Format message 1.2.3'],
-    );
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(expect.anything(), 'git', ['tag', '-a', 'v1.2.3', '-m', 'chore(release): 1.2.3']);
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(expect.anything(), 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
   });
 
-  it('calls.', async () => {
+  it('calls "git tag" with "-a" flag.', async () => {
     jest.spyOn(runExecFileLib, 'runExecFile').mockImplementationOnce(async () => 'branch-name');
     await expect(() => tag('1.2.3', false, {
-      silent: true,
       tagPrefix: 'v',
+      silent: true,
+      header: '# Test change log\n',
+      packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
+      dryRun: true,
+      scripts: { 'hook-name': 'foo -h' },
       releaseCommitMessageFormat: 'Format message {{currentTag}}',
       skip: {
         tag: false,
       },
       sign: false,
     })).rejects.toThrowError('The current branch is "undefined" and the execTag function could not properly continue...');
-    expect(runLifecycleScript).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'Format message {{currentTag}}',
-        sign: false,
-        silent: true,
-        skip: { tag: false },
-        tagPrefix: 'v',
-      },
-      'pretag',
-    );
-    expect(checkpoint).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'Format message {{currentTag}}',
-        sign: false,
-        silent: true,
-        skip: { tag: false },
-        tagPrefix: 'v',
-      },
-      'tagging release %s%s',
-      [
-        'v',
-        '1.2.3',
-      ],
-    );
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(
-      {
-        releaseCommitMessageFormat: 'Format message {{currentTag}}',
-        sign: false,
-        silent: true,
-        skip: { tag: false },
-        tagPrefix: 'v',
-      },
-      'git',
-      ['tag', '-a', 'v1.2.3', '-m', 'Format message 1.2.3'],
-    );
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(runLifecycleScript).toHaveBeenCalledWith(expect.anything(), 'pretag');
+    expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'tagging release %s%s', ['v', '1.2.3']);
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(expect.anything(), 'git', ['tag', '-a', 'v1.2.3', '-m', 'Format message 1.2.3']);
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(expect.anything(), 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
   });
 
   it('calls "git tag" with "-s" flag for signing.', async () => {
@@ -129,8 +90,14 @@ describe('tag', () => {
     jest.spyOn(bumpLib, 'getUpdatedConfigs').mockImplementationOnce(() => ({ 'package.json': true }));
 
     await tag('1.2.3', false, {
-      silent: true,
       tagPrefix: 'v',
+      silent: true,
+      header: '# Test change log\n',
+      packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
+      dryRun: true,
+      scripts: { 'hook-name': 'foo -h' },
       releaseCommitMessageFormat: 'Format message {{currentTag}}',
       skip: {
         tag: false,
@@ -138,7 +105,7 @@ describe('tag', () => {
       sign: true,
     });
 
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(expect.anything(), 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
     expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'tagging release %s%s', ['v', '1.2.3']);
     expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'Run `%s` to publish', ['git push --follow-tags origin main && npm publish'], '[INFO]');
   });
@@ -148,8 +115,14 @@ describe('tag', () => {
     jest.spyOn(bumpLib, 'getUpdatedConfigs').mockImplementationOnce(() => ({ 'package.json': true }));
 
     await tag('1.2.3', false, {
-      silent: true,
       tagPrefix: 'v',
+      silent: true,
+      header: '# Test change log\n',
+      packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
+      dryRun: true,
+      scripts: { 'hook-name': 'foo -h' },
       releaseCommitMessageFormat: 'Format message {{currentTag}}',
       skip: {
         tag: false,
@@ -158,7 +131,7 @@ describe('tag', () => {
       prerelease: '',
     });
 
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(expect.anything(), 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
     expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'tagging release %s%s', ['v', '1.2.3']);
     expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'Run `%s` to publish', ['git push --follow-tags origin main && npm publish --tag prerelease'], '[INFO]');
   });
@@ -168,8 +141,14 @@ describe('tag', () => {
     jest.spyOn(bumpLib, 'getUpdatedConfigs').mockImplementationOnce(() => ({ 'package.json': true }));
 
     await tag('1.2.3', false, {
-      silent: true,
       tagPrefix: 'v',
+      silent: true,
+      header: '# Test change log\n',
+      packageFiles: ['custom-package-file'],
+      bumpFiles: [],
+      preset: {},
+      dryRun: true,
+      scripts: { 'hook-name': 'foo -h' },
       releaseCommitMessageFormat: 'Format message {{currentTag}}',
       skip: {
         tag: false,
@@ -178,7 +157,7 @@ describe('tag', () => {
       prerelease: 'custom-prerelease',
     });
 
-    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith({}, 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
+    expect(runExecFileLib.runExecFile).toHaveBeenCalledWith(expect.anything(), 'git', ['rev-parse', '--abbrev-ref', 'HEAD']);
     expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'tagging release %s%s', ['v', '1.2.3']);
     expect(checkpoint).toHaveBeenCalledWith(expect.anything(), 'Run `%s` to publish', ['git push --follow-tags origin main && npm publish --tag custom-prerelease'], '[INFO]');
   });

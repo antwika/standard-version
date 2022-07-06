@@ -1,13 +1,9 @@
 import { promisify } from 'util';
 import { exec } from 'child_process';
 import printError from './print-error';
+import { Args } from './standard-version';
 
-type RunExecArgs = {
-  silent?: boolean,
-  dryRun?: boolean,
-};
-
-const runExec = async (args: RunExecArgs, cmd: string) => {
+const runExec = async (args: Args, cmd: string) => {
   const execPromise = promisify(exec);
   if (args.dryRun) return undefined;
   try {

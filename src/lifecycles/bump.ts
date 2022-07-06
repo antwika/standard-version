@@ -8,8 +8,9 @@ import presetLoader from '../preset-loader';
 import { runLifecycleScript } from '../run-lifecycle-script';
 import writeFile from '../write-file';
 import { resolveUpdaterObjectFromArgument } from '../updaters';
+import { Args } from '../standard-version';
 
-let configsToUpdate: any = {};
+let configsToUpdate: Record<string, boolean> = {};
 
 type SemverTypeName = 'patch' | 'minor' | 'major';
 
@@ -25,7 +26,7 @@ const semverTypePriorityMap: Record<SemverTypeName, number> = ({
  * @param version
  * @return {string}
  */
-export const getCurrentActiveType = (version: any): SemverTypeName => {
+export const getCurrentActiveType = (version: string): SemverTypeName => {
   if (semver.patch(version)) return 'patch';
   if (semver.minor(version)) return 'minor';
   if (semver.major(version)) return 'major';
@@ -45,11 +46,11 @@ const isString = (val: any) => typeof val === 'string';
  * @return {boolean}
  */
 const shouldContinuePrerelease = (
-  version: any,
-  expectType: any,
+  version: string,
+  expectType: SemverTypeName,
 ) => getCurrentActiveType(version) === expectType;
 
-const isInPrerelease = (version: any) => Array.isArray(semver.prerelease(version));
+const isInPrerelease = (version: string) => Array.isArray(semver.prerelease(version));
 
 /**
  * calculate the priority of release type,
@@ -60,7 +61,11 @@ const isInPrerelease = (version: any) => Array.isArray(semver.prerelease(version
  */
 export const getTypePriority = (type: SemverTypeName) => semverTypePriorityMap[type];
 
-function getReleaseType(prerelease: any, expectedReleaseType: any, currentVersion: any) {
+const getReleaseType = (
+  prerelease: any,
+  expectedReleaseType: SemverTypeName,
+  currentVersion: string,
+) => {
   if (!isString(prerelease)) return expectedReleaseType;
   if (!isInPrerelease(currentVersion)) return `pre${expectedReleaseType}`;
 
@@ -71,9 +76,10 @@ function getReleaseType(prerelease: any, expectedReleaseType: any, currentVersio
   }
 
   return `pre${expectedReleaseType}`;
-}
+};
 
-function bumpVersion(releaseAs: any, currentVersion: any, args: any) {
+// eslint-disable-next-line arrow-body-style
+const bumpVersion = (releaseAs: any, currentVersion: string, args: any) => {
   return new Promise((resolve, reject) => {
     if (releaseAs) {
       resolve({
@@ -96,7 +102,7 @@ function bumpVersion(releaseAs: any, currentVersion: any, args: any) {
       });
     }
   });
-}
+};
 
 /**
  * attempt to update the version number in provided `bumpFiles`
@@ -104,9 +110,9 @@ function bumpVersion(releaseAs: any, currentVersion: any, args: any) {
  * @param newVersion version number to update to.
  * @return void
  */
-function updateConfigs(args: any, newVersion: any) {
+function updateConfigs(args: Args, newVersion: string) {
   const dotgit = DotGitignore();
-  args.bumpFiles.forEach((bumpFile: any) => {
+  args.bumpFiles.forEach((bumpFile) => {
     const updater = resolveUpdaterObjectFromArgument(bumpFile);
     if (!updater) return;
     if (!updater.filename) return;
@@ -136,23 +142,25 @@ function updateConfigs(args: any, newVersion: any) {
   });
 }
 
-const Bump = async (args: any, version: any) => {
+const Bump = async (args: any, version: string) => {
   // reset the cache of updated config files each
   // time we perform the version bump step.
   configsToUpdate = {};
 
   if (args.skip.bump) return version;
-  let newVersion = version;
   await runLifecycleScript(args, 'prerelease');
   const stdout = await runLifecycleScript(args, 'prebump');
 
   // eslint-disable-next-line no-param-reassign
   if (stdout && stdout.trim().length) args.releaseAs = stdout.trim();
   const release: any = await bumpVersion(args.releaseAs, version, args);
+  let newVersion = version;
   if (!args.firstRelease) {
-    const releaseType = getReleaseType(args.prerelease, release.releaseType, version);
-    newVersion = semver.valid(releaseType) || semver.inc(version, releaseType, args.prerelease);
-    updateConfigs(args, newVersion);
+    const releaseType = getReleaseType(args.prerelease, release.releaseType, version) as any;
+    const temp = semver.valid(releaseType) || semver.inc(version, releaseType, args.prerelease);
+    if (temp === null) throw new Error(`Failed to bump version, the provided version is not valid ${version}`);
+    updateConfigs(args, temp);
+    newVersion = temp;
   } else {
     checkpoint(args, 'skip version bump on first release', [], '[SKIP]');
   }

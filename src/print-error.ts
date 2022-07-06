@@ -1,10 +1,8 @@
+import { Args } from './standard-version';
+
 type PrintLevel = 'info' | 'warn' | 'error' | 'log' | 'debug';
 
-type PrintErrorArgs = {
-  silent?: boolean,
-}
-
-const printError = (args: PrintErrorArgs, msg: string, level: PrintLevel) => {
+const printError = (args: Args, msg: string, level: PrintLevel) => {
   if (args.silent) return;
 
   switch (level) {

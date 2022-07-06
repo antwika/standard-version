@@ -1,16 +1,12 @@
 import { promisify } from 'util';
 import { execFile } from 'child_process';
 import printError from './print-error';
-
-type RunExecFileArgs = {
-  silent?: boolean,
-  dryRun?: boolean,
-};
+import { Args } from './standard-version';
 
 type RunExecFileCmdArgs = string[];
 
 export const runExecFile = async (
-  args: RunExecFileArgs,
+  args: Args,
   cmd: string,
   cmdArgs: RunExecFileCmdArgs,
 ) => {

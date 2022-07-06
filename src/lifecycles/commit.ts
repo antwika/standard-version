@@ -4,25 +4,11 @@ import checkpoint from '../checkpoint';
 import formatCommitMessage from '../format-commit-message';
 import { runExecFile } from '../run-execFile';
 import { runLifecycleScript } from '../run-lifecycle-script';
+import { Args } from '../standard-version';
 
-type CommitArgs = {
-  silent: boolean,
-  verify?: boolean,
-  n?: any,
-  sign?: boolean,
-  skip: {
-    commit?: boolean,
-    changelog?: boolean,
-    bump?: boolean,
-  },
-  infile?: string,
-  commitAll?: boolean,
-  releaseCommitMessageFormat: string,
-};
-
-async function execCommit(args: CommitArgs, newVersion: string) {
+async function execCommit(args: Args, newVersion: string) {
   let msg = 'committing %s';
-  let paths: any = [];
+  let paths: string[] = [];
   const verify = args.verify === false || args.n ? ['--no-verify'] : [];
   const sign = args.sign ? ['-S'] : [];
   const toAdd: string[] = [];
@@ -75,7 +61,7 @@ async function execCommit(args: CommitArgs, newVersion: string) {
   );
 }
 
-const Commit = async (args: CommitArgs, newVersion: string) => {
+const Commit = async (args: Args, newVersion: string) => {
   if (args.skip.commit) return;
   const message = await runLifecycleScript(args, 'precommit');
   // eslint-disable-next-line no-param-reassign

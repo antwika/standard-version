@@ -14,19 +14,25 @@ jest.mock('../../../src/run-lifecycle-script');
 describe('commit', () => {
   it('exits early when argument "skip.commit" is set to "true".', async () => {
     const result = await commit({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
       silent: true,
       skip: {
         commit: true,
       },
-      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     }, '1.2.3');
     expect(result).not.toBeDefined();
   });
 
   it('sets the "releaseCommitMessageFormat" if the return value of runLifecycleScript is defined.', async () => {
     jest.spyOn(runLifecycleScriptLib, 'runLifecycleScript').mockImplementationOnce(async () => 'returned value from runLifecycleScript');
-    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => []);
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => ({}));
     const result = await commit({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
       silent: true,
       verify: false,
       sign: false,
@@ -35,7 +41,9 @@ describe('commit', () => {
         commit: false,
         changelog: true,
       },
-      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     }, '1.2.3');
     expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
     expect(result).not.toBeDefined();
@@ -53,8 +61,10 @@ describe('commit', () => {
 
   it('exits early if argument "skip.bump" is set to "true".', async () => {
     jest.spyOn(runLifecycleScriptLib, 'runLifecycleScript').mockImplementationOnce(async () => 'returned value from runLifecycleScript');
-    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => []);
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => ({}));
     const result = await commit({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
       silent: true,
       verify: false,
       sign: false,
@@ -63,7 +73,9 @@ describe('commit', () => {
         commit: false,
         changelog: true,
       },
-      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     }, '1.2.3');
     expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
     expect(result).not.toBeDefined();
@@ -71,8 +83,10 @@ describe('commit', () => {
 
   it('will run git hooks when argument "n" is set to "false" (by omitting the "--no-verify" flag).', async () => {
     jest.spyOn(runLifecycleScriptLib, 'runLifecycleScript').mockImplementationOnce(async () => 'returned value from runLifecycleScript');
-    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => []);
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => ({}));
     const result = await commit({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
       silent: true,
       verify: true,
       n: false,
@@ -82,21 +96,27 @@ describe('commit', () => {
         commit: false,
         changelog: true,
       },
-      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     }, '1.2.3');
     expect(checkpoint).toHaveBeenCalledWith(expect.any(Object), 'committing %s', []);
     expect(result).not.toBeDefined();
   });
 
   it('will add "-S" flag to "git tag" command if argument "skip" is set to "true".', async () => {
-    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => ['package.json']);
+    jest.spyOn(bump, 'getUpdatedConfigs').mockImplementationOnce(() => ({ 'package.json': true }));
     const result = await commit({
+      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      tagPrefix: 'v',
       silent: true,
       sign: true,
       skip: {
         commit: false,
       },
-      releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
+      packageFiles: [],
+      bumpFiles: [],
+      preset: {},
     }, '1.2.3');
     expect(result).not.toBeDefined();
   });
