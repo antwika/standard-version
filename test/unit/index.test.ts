@@ -12,6 +12,7 @@ describe('index', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
       preset: {},
     };
 

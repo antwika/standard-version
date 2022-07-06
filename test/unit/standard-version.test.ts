@@ -52,6 +52,7 @@ describe('standard-version', () => {
       header: '# Test change log\n',
       message: 'hello',
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     });
 
@@ -74,6 +75,7 @@ describe('standard-version', () => {
       header: '# Test change log\n',
       message: 'hello',
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     });
 
@@ -99,6 +101,7 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
       preset: {},
     });
 
@@ -134,6 +137,7 @@ describe('standard-version', () => {
       message: 'Message (deprecated usage)',
       changelogHeader: '# Custom changelog header (deprecated usage)',
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     });
 
@@ -150,6 +154,7 @@ describe('standard-version', () => {
       message: 'Message (deprecated usage)',
       changelogHeader: '# [1.2.3] My invalid changelog header',
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     })).rejects.toThrowError('custom changelog header must not match /(^#+ \\[?\\d+\\.\\d+\\.\\d+|<a name=)/m');
   });
@@ -174,6 +179,7 @@ describe('standard-version', () => {
       message: 'Message (deprecated usage)',
       changelogHeader: '# Custom changelog header (deprecated usage)',
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     });
 
@@ -199,6 +205,7 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: [],
+      bumpFiles: [],
       gitTagFallback: false,
       preset: {},
     })).rejects.toThrowError('no package file found');
@@ -223,6 +230,7 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['not-found-package-file.json'],
+      bumpFiles: [],
       gitTagFallback: false,
       preset: {},
     })).rejects.toThrowError('no package file found');
@@ -248,6 +256,7 @@ describe('standard-version', () => {
       silent: true,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
       preset: {},
     });
 

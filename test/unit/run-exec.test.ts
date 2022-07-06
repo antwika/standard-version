@@ -1,8 +1,10 @@
 import util from 'util';
 import runExec from '../../src/run-exec';
+import printError from '../../src/print-error';
 
 jest.mock('child_process');
 jest.mock('util');
+jest.mock('../../src/print-error');
 
 describe('run-exec', () => {
   beforeEach(() => {
@@ -18,12 +20,13 @@ describe('run-exec', () => {
       dryRun: true,
       skip: {},
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     }, 'foo -h');
     expect(result).not.toBeDefined();
   });
 
-  it('executes the command but returns a printed warning message if there is a failure during execution.', async () => {
+  it('executes the command but prints a warning message if there is a failure during execution.', async () => {
     jest.spyOn(util, 'promisify').mockImplementationOnce(() => async () => ({ stderr: 'a warning', stdout: undefined }));
     jest.spyOn(global.console, 'warn').mockImplementation();
     await runExec({
@@ -34,12 +37,14 @@ describe('run-exec', () => {
       dryRun: false,
       skip: {},
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     }, 'foo -h');
-    expect(console.warn).toHaveBeenCalledWith('a warning');
+    expect(printError).toHaveBeenCalledWith(expect.anything(), 'a warning', 'warn');
+    // expect(console.warn).toHaveBeenCalledWith('a warning');
   });
 
-  it('executes the command but returns a printed error message if there is a fatal error during execution.', async () => {
+  it('executes the command but prints an error message and rethrows the error if there is a fatal error during execution.', async () => {
     jest.spyOn(util, 'promisify').mockImplementationOnce(() => async () => { throw new Error('Fatal error'); });
     jest.spyOn(global.console, 'error').mockImplementation();
     await expect(() => runExec({
@@ -50,8 +55,10 @@ describe('run-exec', () => {
       dryRun: false,
       skip: {},
       packageFiles: [],
+      bumpFiles: [],
       preset: {},
     }, 'foo -h')).rejects.toThrowError('Fatal error');
-    expect(console.error).toHaveBeenCalledWith('Fatal error');
+    expect(printError).toHaveBeenCalledWith(expect.anything(), 'Fatal error', 'error');
+    // expect(console.error).toHaveBeenCalledWith('Fatal error');
   });
 });

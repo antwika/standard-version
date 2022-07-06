@@ -8,7 +8,7 @@ import { Args } from '../standard-version';
 
 async function execCommit(args: Args, newVersion: string) {
   let msg = 'committing %s';
-  let paths: any = [];
+  let paths: string[] = [];
   const verify = args.verify === false || args.n ? ['--no-verify'] : [];
   const sign = args.sign ? ['-S'] : [];
   const toAdd: string[] = [];

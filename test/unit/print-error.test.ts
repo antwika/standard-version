@@ -5,6 +5,7 @@ const args = {
   tagPrefix: 'v',
   header: '# Test change log\n',
   packageFiles: ['custom-package-file'],
+  bumpFiles: [],
   preset: {},
   dryRun: true,
   scripts: { 'hook-name': 'foo -h' },

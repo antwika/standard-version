@@ -24,6 +24,8 @@ export type Args = {
   commitAll?: boolean,
   releaseCommitMessageFormat: string,
   tagPrefix: string,
+  releaseAs?: string,
+  firstRelease?: boolean,
   prerelease?: string,
   dryRun?: boolean,
   scripts?: Record<string, string>,
@@ -31,9 +33,10 @@ export type Args = {
   message?: string,
   changelogHeader?: string,
   header?: string,
-  packageFiles: any[],
+  packageFiles: string[],
   gitTagFallback?: boolean,
-  preset: Record<any, any>,
+  preset: Record<string, any>,
+  bumpFiles: string[],
 };
 
 export const standardVersion = async (argv: Args) => {

@@ -1,8 +1,10 @@
 import util from 'util';
 import { runExecFile } from '../../src/run-execFile';
+import printError from '../../src/print-error';
 
 jest.mock('child_process');
 jest.mock('util');
+jest.mock('../../src/print-error');
 
 describe('run-execFile', () => {
   beforeEach(() => {
@@ -17,6 +19,7 @@ describe('run-execFile', () => {
       silent: false,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
       preset: {},
       dryRun: true,
     }, 'foo', ['-h']);
@@ -33,10 +36,12 @@ describe('run-execFile', () => {
       silent: false,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
       preset: {},
-      dryRun: true,
+      dryRun: false,
     }, 'foo', ['-h']);
-    expect(console.warn).toHaveBeenCalledWith('a warning');
+    expect(printError).toHaveBeenCalledWith(expect.anything(), 'a warning', 'warn');
+    // expect(console.warn).toHaveBeenCalledWith('a warning');
   });
 
   it('executes the command but returns a printed error message if there is a fatal error during execution.', async () => {
@@ -49,9 +54,11 @@ describe('run-execFile', () => {
       silent: false,
       header: '# Test change log\n',
       packageFiles: ['custom-package-file'],
+      bumpFiles: [],
       preset: {},
-      dryRun: true,
+      dryRun: false,
     }, 'foo', ['-h'])).rejects.toThrowError('Fatal error');
-    expect(console.error).toHaveBeenCalledWith('Fatal error');
+    expect(printError).toHaveBeenCalledWith(expect.anything(), 'Fatal error', 'error');
+    // expect(console.error).toHaveBeenCalledWith('Fatal error');
   });
 });
