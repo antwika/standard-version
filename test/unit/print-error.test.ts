@@ -64,4 +64,8 @@ describe('print-error', () => {
     printError({ ...args, silent: false }, 'Debug message', 'debug');
     expect(console.debug).toHaveBeenCalledWith('Debug message');
   });
+
+  it('throws if an unknown log level is provided.', () => {
+    expect(() => printError({ ...args, silent: false }, 'Unknown message', 'unknown' as any)).toThrowError();
+  });
 });

@@ -39,7 +39,7 @@ export type Args = {
   bumpFiles: string[],
 };
 
-const getPackage = async (args: Args) => {
+export const getPackage = async (args: Args) => {
   let pkg;
   for (const packageFile of args.packageFiles) {
     const updater = resolveUpdaterObjectFromArgument(packageFile);

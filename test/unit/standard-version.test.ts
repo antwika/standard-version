@@ -5,7 +5,7 @@ import { changelog } from '../../src/lifecycles/changelog';
 import { latestSemverTag } from '../../src/latest-semver-tag';
 import { tag } from '../../src/lifecycles/tag';
 import * as updaters from '../../src/updaters';
-import { standardVersion } from '../../src/standard-version';
+import { standardVersion, getPackage } from '../../src/standard-version';
 
 jest.mock('fs');
 jest.mock('path');
@@ -41,6 +41,14 @@ jest.mock('../../src/defaults', () => ({
 describe('standard-version', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  describe('getPackage', () => {
+    it('exits early if an updater if resolve, but without a filename', async () => {
+      jest.spyOn(updaters, 'resolveUpdaterObjectFromArgument').mockReturnValue({ filename: undefined } as any);
+      const pkg = await getPackage({ packageFiles: ['abc'] } as any);
+      expect(pkg).toBeUndefined();
+    });
   });
 
   it('exits early if updater could not be resolved.', async () => {
