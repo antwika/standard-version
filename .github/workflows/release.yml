@@ -1,5 +1,7 @@
 name: Release
 on:
+  schedule:
+    - cron: "15 12 * * 6" # Every Saturday 12:15 UTC
   workflow_dispatch:
 jobs:
   publish:
