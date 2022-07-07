@@ -85,7 +85,7 @@ export const standardVersion = async (argv: Args) => {
     }
   }
 
-  if (argv.header && argv.header.search(START_OF_LAST_RELEASE_PATTERN) !== -1) {
+  if (argv.header?.search(START_OF_LAST_RELEASE_PATTERN) !== -1) {
     throw Error(`custom changelog header must not match ${START_OF_LAST_RELEASE_PATTERN}`);
   }
 

@@ -58,7 +58,8 @@ describe('git', () => {
   });
 
   it('formats the commit and tag messages appropriately', async () => {
-    await standardVersion({} as any);
+    const opts = await command.getParser().parse('');
+    await standardVersion(opts as any);
     expect(shell.exec('git log --oneline -n1').stdout).toMatch(/chore\(release\): 1\.1\.0/);
     expect(shell.exec('git tag -l -n1 v1.1.0').stdout).toMatch(/chore\(release\): 1\.1\.0/);
   });

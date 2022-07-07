@@ -65,7 +65,7 @@ const Commit = async (args: Args, newVersion: string) => {
   if (args.skip.commit) return;
   const message = await runLifecycleScript(args, 'precommit');
   // eslint-disable-next-line no-param-reassign
-  if (message && message.length) args.releaseCommitMessageFormat = message;
+  if (message?.length) args.releaseCommitMessageFormat = message;
   await execCommit(args, newVersion);
   await runLifecycleScript(args, 'postcommit');
 };

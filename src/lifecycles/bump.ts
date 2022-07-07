@@ -152,7 +152,7 @@ const Bump = async (args: any, version: string) => {
   const stdout = await runLifecycleScript(args, 'prebump');
 
   // eslint-disable-next-line no-param-reassign
-  if (stdout && stdout.trim().length) args.releaseAs = stdout.trim();
+  if (stdout?.trim().length) args.releaseAs = stdout.trim();
   const release: any = await bumpVersion(args.releaseAs, version, args);
   let newVersion = version;
   if (!args.firstRelease) {
