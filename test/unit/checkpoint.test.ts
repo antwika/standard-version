@@ -16,4 +16,10 @@ describe('checkpoint', () => {
     checkpoint({ silent: true }, 'Should not be logged', []);
     expect(console.info).not.toHaveBeenCalled();
   });
+
+  it('should use the default figure, if none was provided.', () => {
+    jest.spyOn(global.console, 'info').mockImplementation();
+    checkpoint({ silent: false }, 'Test', []);
+    expect(console.info).toHaveBeenCalledWith('[OK] Test');
+  });
 });
