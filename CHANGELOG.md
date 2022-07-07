@@ -1,4 +1,28 @@
-undefined
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [0.1.2](https://github.com/antwika/standard-version/compare/v0.1.1...v0.1.2) (2022-07-06)
+
+
+### Bug Fixes
+
+* bug where "silent" being "undefined" still outputted checkpoints. ([d1cf34e](https://github.com/antwika/standard-version/commit/d1cf34e8e613723fd2441d4a2c544cc7c71c3414))
+* **deps:** update dependency conventional-changelog-conventionalcommits to v5 ([b65829f](https://github.com/antwika/standard-version/commit/b65829f14b5634d1c7c4d75029ce56d05d396328))
+* **deps:** update dependency yargs to v17 ([1424a40](https://github.com/antwika/standard-version/commit/1424a401ef14b2020bdeb53a9c9e43b455558d5e))
+* drop figures dependency ([e2b3369](https://github.com/antwika/standard-version/commit/e2b336919caad26002f96d5b54cc1e85c37b5e08))
+* initial application-wide type for arguments ([a1b0e4e](https://github.com/antwika/standard-version/commit/a1b0e4e67dd2e10dd10d14160b9798f603d33402))
+* remove direct chalk dependency ([b8b8c24](https://github.com/antwika/standard-version/commit/b8b8c248f61236eedf8851ac989d29d1a74eb2d4))
+* remove unused dependency ([e4e7e81](https://github.com/antwika/standard-version/commit/e4e7e811dd55f9c505c5867d626b885214edafbf))
+* remove unused dependency ([5253e90](https://github.com/antwika/standard-version/commit/5253e9019a7c882cd58233b3f5fe220a5a215757))
+* remove unused dependency ([c50bffc](https://github.com/antwika/standard-version/commit/c50bffca6122b0ccee8f1d2da11f574e3cc4321f))
+* remove unused dependency ([3fb98ca](https://github.com/antwika/standard-version/commit/3fb98cac0dc769b27a94c3598be3fc7750b24c1c))
+* replace readme ([2b4c168](https://github.com/antwika/standard-version/commit/2b4c16824c9e7c7ed921deee9a99a68814559e78))
+* tweaks and unit tests ([c290998](https://github.com/antwika/standard-version/commit/c290998fd0ddd3f74fbfb7b9db0bcd13b85ba467))
+* type inference for getDefaults ([1e3a214](https://github.com/antwika/standard-version/commit/1e3a2140fd05860622f8a335c9f4babf6a0c5ed1))
+* use a common type for arguments passed throughout the program ([fa7c0f4](https://github.com/antwika/standard-version/commit/fa7c0f4f5177e9931a7aa5a1a455e8b2d26cc99f))
+* use jest instead of mocha ([81e8415](https://github.com/antwika/standard-version/commit/81e84154d93cda5759e4ad3af4ac7350442d3729))
+
 ### [0.1.1](https://github.com/antwika/standard-version/compare/v0.1.0...v0.1.1) (2022-07-02)
 
 
