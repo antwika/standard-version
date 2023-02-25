@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "name": "@antwika/standard-version",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "private": false,
   "engines": {
     "node": ">=16.15"
