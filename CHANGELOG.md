@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.39](https://github.com/antwika/standard-version/compare/v0.1.38...v0.1.39) (2023-03-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency semver to v7.3.8 ([a373930](https://github.com/antwika/standard-version/commit/a3739303b590e7f591093db7a748ccaf693c0c00))
+* **deps:** update dependency yargs to v17.7.1 ([8667a67](https://github.com/antwika/standard-version/commit/8667a6768059c61ab3667b031b4c709a4d79345a))
+
 ## [0.1.38](https://github.com/antwika/standard-version/compare/v0.1.37...v0.1.38) (2023-03-11)
 
 ## [0.1.37](https://github.com/antwika/standard-version/compare/v0.1.36...v0.1.37) (2023-03-04)
