@@ -1599,10 +1599,10 @@ conventional-commits-parser@^4.0.0:
     meow "^8.1.2"
     split2 "^3.2.2"
 
-conventional-recommended-bump@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/conventional-recommended-bump/-/conventional-recommended-bump-7.0.0.tgz#1043f7b1a145eba6214854d8a0f0e53e4464bc7c"
-  integrity sha512-+N8w1D8hFZ4HxbJwlST2nGf5vhwVUOkJiziWr4/c0x+Y9Tfup3TI7NFlT4ET6WgF+PL1+r3ju5M5QzpKCwe5pw==
+conventional-recommended-bump@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/conventional-recommended-bump/-/conventional-recommended-bump-7.0.1.tgz#ec01f6c7f5d0e2491c2d89488b0d757393392424"
+  integrity sha512-Ft79FF4SlOFvX4PkwFDRnaNiIVX7YbmqGU0RwccUaiGvgp3S0a8ipR2/Qxk31vclDNM+GSdJOVs2KrsUCjblVA==
   dependencies:
     concat-stream "^2.0.0"
     conventional-changelog-preset-loader "^3.0.0"
