@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.51](https://github.com/antwika/standard-version/compare/v0.1.50...v0.1.51) (2023-06-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency conventional-changelog-conventionalcommits to v6 ([8fbd1ef](https://github.com/antwika/standard-version/commit/8fbd1efc5b9e956aec8793043792b6b2b893e163))
+* **deps:** update dependency conventional-recommended-bump to v7 ([034dd0c](https://github.com/antwika/standard-version/commit/034dd0c8f38c572eca0bc8d42029fc9d0d47b216))
+* **deps:** update dependency conventional-recommended-bump to v7.0.1 ([9ce9a8a](https://github.com/antwika/standard-version/commit/9ce9a8a23e9541b3e400ef0c29d784b96e167ce4))
+* **deps:** update dependency git-semver-tags to v5 ([cbf3992](https://github.com/antwika/standard-version/commit/cbf39925917143574fd33c4176928b95dcdc15ef))
+
 ## [0.1.50](https://github.com/antwika/standard-version/compare/v0.1.49...v0.1.50) (2023-06-03)
 
 ## [0.1.49](https://github.com/antwika/standard-version/compare/v0.1.48...v0.1.49) (2023-05-27)
