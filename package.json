@@ -28,7 +28,7 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "29.5.3",
+    "@types/jest": "29.5.4",
     "@types/node": "18.17.7",
     "@types/semver": "7.5.0",
     "@types/shelljs": "0.8.12",
