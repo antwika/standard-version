@@ -2514,6 +2514,14 @@ git-semver-tags@^5.0.0:
     meow "^8.1.2"
     semver "^7.0.0"
 
+git-semver-tags@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/git-semver-tags/-/git-semver-tags-6.0.0.tgz#b011ef94ae23ec8121f311d92a5969fc91502e15"
+  integrity sha512-v5BL6psuUy+Ftuo99141XlOIDoJtKw5+YyDANS7fknSP0iT4cVIanc3toDsH4K+VpIWc19l2/xkwQmXMfloeUA==
+  dependencies:
+    meow "^12.0.1"
+    semver "^7.5.2"
+
 gitconfiglocal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/gitconfiglocal/-/gitconfiglocal-1.0.0.tgz#41d045f3851a5ea88f03f24ca1c6178114464b9b"
@@ -3694,6 +3702,11 @@ map-obj@^4.0.0:
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-4.3.0.tgz#9304f906e93faae70880da102a9f1df0ea8bb05a"
   integrity sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==
 
+meow@^12.0.1:
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/meow/-/meow-12.1.0.tgz#5f0f53c17ce6691302b49a4706d7832cd5dd5dd6"
+  integrity sha512-SvSqzS5ktjGoySdCwxQI16iO/ID1LtxM03QvJ4FF2H5cCtXLN7YbfKBCL9btqXSSuJ5TNG4UH6wvWtXZuvgvrw==
+
 meow@^8.1.2:
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/meow/-/meow-8.1.2.tgz#bcbe45bda0ee1729d350c03cffc8395a36c4e897"
@@ -4419,7 +4432,7 @@ semver@^6.3.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
-semver@^7.0.0, semver@^7.1.1, semver@^7.3.4, semver@^7.5.4:
+semver@^7.0.0, semver@^7.1.1, semver@^7.3.4, semver@^7.5.2, semver@^7.5.4:
   version "7.5.4"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.4.tgz#483986ec4ed38e1c6c48c34894a9182dbff68a6e"
   integrity sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==
