@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.115](https://github.com/antwika/standard-version/compare/v0.1.114...v0.1.115) (2024-08-31)
+
 ## [0.1.114](https://github.com/antwika/standard-version/compare/v0.1.113...v0.1.114) (2024-08-24)
 
 ## [0.1.113](https://github.com/antwika/standard-version/compare/v0.1.112...v0.1.113) (2024-08-17)
