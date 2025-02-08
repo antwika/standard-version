@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.138](https://github.com/antwika/standard-version/compare/v0.1.137...v0.1.138) (2025-02-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency semver to v7.7.1 ([#657](https://github.com/antwika/standard-version/issues/657)) ([3495cde](https://github.com/antwika/standard-version/commit/3495cdee6e0c4898cee45c8060ca4148fa766703))
+
 ## [0.1.137](https://github.com/antwika/standard-version/compare/v0.1.136...v0.1.137) (2025-02-01)
 
 
